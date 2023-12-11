@@ -1,34 +1,28 @@
-import './App.css';
 import React, { useState } from 'react';
 import Login from './components/Login';
-import Register from './components/Register';
-import AccountDetails from './components/AccountDetails';
+import Dashboard from './components/Dashboard';
 
 const App = () => {
+  const [view, setView] = useState('login'); // 'login', 'authCallback', 'dashboard'
   const [loggedInUser, setLoggedInUser] = useState(null);
-  const [isRegistering, setIsRegistering] = useState(false);
+  const [oAuthToken, setOAuthToken] = useState(null);
 
-  const handleLogin = (username) => {
-    // Uppdatera tillståndet för inloggad användare
+  const handleLogin = (username, token) => {
     setLoggedInUser(username);
-  };
-
-  const handleRegister = (username) => {
-    // Implementera ytterligare logik om det behövs
-    setLoggedInUser(username);
+    setOAuthToken(token);
+    setView('dashboard');
   };
 
   return (
     <div>
-    {loggedInUser ? (
-      <AccountDetails username={loggedInUser} />
-    ) : isRegistering ? (
-      <Register onRegister={handleRegister} />
-    ) : (
-      <Login onLogin={handleLogin} onRegister={() => setIsRegistering(true)} />
-    )}
-  </div>
-);
+      {view === 'dashboard' ? (
+        <Dashboard oAuthToken={oAuthToken} loggedInUser={loggedInUser} />
+      ) : (
+        <Login onLogin={handleLogin} />
+      )}
+    </div>
+  );
 };
+
 
 export default App;
