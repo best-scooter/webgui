@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Dashboard.css';
 
-import Trips from './Trips';
-
-const Dashboard = ({ oAuthToken, loggedInUser }) => {
+const Dashboard = ({ oAuthToken, loggedInUser, onViewTripsClick }) => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -17,8 +15,11 @@ const Dashboard = ({ oAuthToken, loggedInUser }) => {
             'X-Access-Token': oAuthToken
           }
         });
+        // Bryt ut token, email, customerID från tokenResponse
+        const { id } = response.data.data;
+        console.log('CustomerId:', id);
+
         setUserData(response.data.data);
-        //console.log(response.data.data, 'userdata från customer/id')
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -27,6 +28,13 @@ const Dashboard = ({ oAuthToken, loggedInUser }) => {
     fetchUserData();
 
   }, [oAuthToken, loggedInUser]);
+
+  const handleViewTripsClick = () => {
+    if (onViewTripsClick) {
+      const { id } = userData;
+      onViewTripsClick(oAuthToken, id);
+    }
+  };
 
   return (
     <div>
@@ -42,6 +50,8 @@ const Dashboard = ({ oAuthToken, loggedInUser }) => {
             <p>Saldo: {userData.balance}</p>
           </>
         )}
+        {/* Button to navigate to Trips page */}
+        <button onClick={handleViewTripsClick}>View Trips</button>
       </div>
     </div>
   );
