@@ -1,0 +1,18 @@
+/* Trips.css */
+.trips-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.trip-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.trip-separator {
+    border-top: 1px solid #ccc;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
