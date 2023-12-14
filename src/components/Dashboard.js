@@ -6,7 +6,11 @@ const Dashboard = ({ oAuthToken, loggedInUser, onViewTripsClick }) => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
+
     const fetchUserData = async () => {
+      const loggedInUser = localStorage.getItem('customerId')
+      const oAuthToken = localStorage.getItem('oAuthToken')
+
       try {
         // Hämta kundinformation baserat på användarens ID
         //GET /customer/{customerId}

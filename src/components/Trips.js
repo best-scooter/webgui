@@ -7,6 +7,7 @@ const Trips = ({ oAuthToken, loggedInUser, onViewDashboardClick}) => {
   const [tripsData, setTripsData] = useState(null);
 
   useEffect(() => {
+    const loggedInUser = localStorage.getItem('customerId')
     const fetchTripsData = async () => {
       try {
         const response = await axios.get(`http://localhost:1337/trip/by/customer/${loggedInUser}`, {
@@ -15,6 +16,7 @@ const Trips = ({ oAuthToken, loggedInUser, onViewDashboardClick}) => {
           }
         });
         setTripsData(response.data.data);
+        console.log(response.data.data)
       } catch (error) {
         console.error('Error fetching user trips:', error);
       }
