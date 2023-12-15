@@ -19,7 +19,7 @@ const Admin = () => {
 
 
     return (
-        <div className="container" style={style.container}>
+        <div className="">
             <MapContainer
             className="full-height-map"
             center={[38, 139.69222]}
@@ -37,7 +37,6 @@ const Admin = () => {
              *  https://docs.stadiamaps.com/themes/
              */
             }
-
             {/* TODO: markers */}
             </MapContainer>
         </div>
