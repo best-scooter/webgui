@@ -1,5 +1,5 @@
 // Login.js
-import React, { useEffect } from 'react';
+import React from 'react';
 import './Login.css';
 //mha axios kan man göra en GET-förfrågan för att hämta autentiserings-URL och sedan skicka användaren till den URL som returnerats
 import axios from 'axios';

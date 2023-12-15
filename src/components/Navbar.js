@@ -1,31 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import InputBase from '@mui/material/InputBase';
 
-import { Link, useNavigate } from 'react-router-dom';
-import PersonIcon from '@mui/icons-material/Person';
-import SearchIcon from '@mui/icons-material/Search';
-//import { useUser } from '../requests/UserContext';
+import { Link } from 'react-router-dom';
+//import PersonIcon from '@mui/icons-material/Person';
 import {
   Category as CategoryIcon,
   Add as AddIcon,
-  LockOpen,
 } from '@mui/icons-material';
 
 
 function Navbar() {
-  const navigate = useNavigate();
-
-  const searchBarStyle = {
-    background: 'white',
-    borderRadius: 4,
-    paddingLeft: 10,
-  };
-  
 
   return (
     <AppBar position="static">
