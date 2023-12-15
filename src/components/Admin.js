@@ -16,28 +16,7 @@ L.Icon.Default.mergeOptions({
 
 
 const Admin = () => {
-    useEffect(() => {
-        const mapContainer = document.getElementById('map');
-        let map = null;
 
-        if (mapContainer && !map) {
-            map = L.map('map').setView([51.505, -0.09], 13);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-        }
-
-        return () => {
-            if (map) {
-                map.remove();
-                map = null;
-            }
-        };
-    }, []);
-
-    const style = {
-        container: {
-            width: '100%',
-        },
-    };
 
     return (
         <div className="container" style={style.container}>
