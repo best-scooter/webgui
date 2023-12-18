@@ -19,12 +19,12 @@ import { MuiPaperContainerColumn, MuiList, MuiListItem } from '../css/theme'
 import './Login.css'
 import '../css/List.css'
 
-import { getCustomers } from '../functions/fetchCustomer'
+import { getScooters } from '../functions/fetchScooters'
 import { Customfilter } from '../functions/helpers'
 import Pagination from '../sub-components/Pagination'
 
-const AdminCustomer = () => {
-  const [customers, setCustomers] = useState([])
+const AdminScooter = () => {
+  const [Scooters, setScooters] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
@@ -32,21 +32,21 @@ const AdminCustomer = () => {
   //Setting the data for pagination
   const itemsPerPage = 100
   const buttons = 5
-  const displayedCustomers = searchQuery ? searchResults : customers
+  const displayedScooters = searchQuery ? searchResults : Scooters
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentCustomers = displayedCustomers.slice(
+  const currentScooters = displayedScooters.slice(
     indexOfFirstItem,
     indexOfLastItem,
   )
-  const totalPages = Math.ceil(displayedCustomers.length / itemsPerPage)
+  const totalPages = Math.ceil(displayedScooters.length / itemsPerPage)
 
   // Getting customers
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const fetchedCustomers = await getCustomers()
-        setCustomers(fetchedCustomers.data)
+        const fetchedCustomers = await getScooters()
+        setScooters(fetchedCustomers.data)
       } catch (error) {
         console.error('Error fetching customers:', error)
       }
@@ -74,16 +74,16 @@ const AdminCustomer = () => {
   // this listens for changes to the search query then updates the results according to the result of the filter
   // filter is currently listening on things like sign up date and stuff so it's gotta be patched or possibly has to be patched if it's important
   useEffect(() => {
-    const updateCustomersWithFilter = async () => {
-      console.log(customers)
-      if (customers.length > 0) {
-        const result = Customfilter(customers, searchQuery)
+    const updateScootersWithFilter = async () => {
+      console.log(displayedScooters)
+      if (Scooters.length > 0) {
+        const result = Customfilter(Scooters, searchQuery)
         console.log(result)
         setSearchResults(result)
         setCurrentPage(1)
       }
     }
-    updateCustomersWithFilter()
+    updateScootersWithFilter()
   }, [searchQuery])
 
   const handleShowDetails = () => {
@@ -113,13 +113,13 @@ const AdminCustomer = () => {
       </div>
       <div className="margin-center">{renderPagination()}</div>
       <List sx={MuiList}>
-        {currentCustomers.map((customer) => (
-          <ListItem key={customer.id} disableGutters sx={MuiListItem}>
+        {currentScooters.map((scooter) => (
+          <ListItem key={scooter.id} disableGutters sx={MuiListItem}>
             <ListItemText
-              primary={`${customer.customerName} - ${customer.email}`}
+              primary={`Scooter ${scooter.id} - ${scooter.available}`}
             />
             <ListItemSecondaryAction>
-              <Tooltip title="Inspect customer">
+              <Tooltip title="Inspect scooter">
                 <IconButton
                   edge="end"
                   aria-label="inspect"
@@ -152,4 +152,4 @@ const AdminCustomer = () => {
   )
 }
 
-export default AdminCustomer
+export default AdminScooter

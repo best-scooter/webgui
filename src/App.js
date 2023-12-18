@@ -11,6 +11,7 @@ import AdminLander from './components/AdminLander'
 import AdminMap from './components/AdminMap'
 import AdminLogin from './components/AdminLogin'
 import AdminCustomer from './components/AdminCustomer'
+import AdminScooter from './components/AdminScooters'
 
 const App = () => {
   console.log('App component rendered')
@@ -63,6 +64,7 @@ const App = () => {
           <Route path="/admin/map" element={<AdminMap />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/customer" element={<AdminCustomer />} />
+          <Route path="/admin/scooter" element={<AdminScooter />} />
         </Routes>
       </Layout>
     </Router>

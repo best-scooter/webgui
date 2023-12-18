@@ -106,8 +106,8 @@ const Admin = () => {
                   {aCity.name}
                 </MenuItem>
               ))}
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              <MenuItem value={20}>ErrorTest</MenuItem>
+              <MenuItem value={30}>ErrorTest</MenuItem>
             </Select>
           </FormControl>
         )}

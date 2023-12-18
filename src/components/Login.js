@@ -5,7 +5,7 @@ import './Login.css'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   //console.log('Login component rendered');
 
   // Funktion som initierar kravet 'Kunden kan logga in på en webbplats via OAuth'

@@ -24,19 +24,3 @@ export async function getCustomers() {
     throw error
   }
 }
-
-export function filterCustomer(data, searchQuery) {
-  const filteredData = data.filter((customer) => {
-    const valuesArray = Object.values(customer)
-    for (const value of valuesArray) {
-      if (
-        typeof value === 'string' &&
-        value.toLowerCase().includes(searchQuery.toLowerCase())
-      ) {
-        return true
-      }
-    }
-    return false
-  })
-  return filteredData
-}
