@@ -2,7 +2,7 @@ import 'leaflet/dist/leaflet.css'
 import 'react-toastify/dist/ReactToastify.css'
 import './Map.css'
 
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import { MapContainer, Marker, Popup, TileLayer, Polygon } from 'react-leaflet'
 import L from 'leaflet'
 // import iconUrl from 'leaflet/dist/images/marker-icon.png'
 // import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
@@ -34,6 +34,7 @@ L.Icon.Default.mergeOptions({
 const Admin = () => {
   const [selectedCity, setSelectedCity] = useState('')
   const [Cities, setCities] = useState('')
+  const [Zones, setZones] = useState([])
   const [Focus, setFocus] = useState([])
   const [Scooters, setScooters] = useState([])
   const mapRef = useRef(null)
@@ -45,6 +46,7 @@ const Admin = () => {
   useEffect(() => {
     const fetchZones = async () => {
       const zones = await getZones()
+      setZones(zones.data)
       filterCityZones(zones)
     }
     const filterCityZones = async (zones) => {
@@ -163,6 +165,11 @@ const Admin = () => {
             >
               <Popup>{scooter.id}</Popup>
             </Marker>
+          ))}
+        {Zones &&
+          Zones.length > 0 &&
+          Zones.map((zone) => (
+            <Polygon key={zone.id} positions={zone.area}></Polygon>
           ))}
       </MapContainer>
     </div>

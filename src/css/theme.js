@@ -67,3 +67,25 @@ export const MuiListItem = {
   bgcolor: 'background.paper',
   color: 'black',
 }
+
+export const MuiNavbarButtons = {
+  '& .MuiButton-contained': {
+    backgroundColor: '#2196F3',
+    color: 'white',
+    transition: 'background-color 0.3s ease-in-out',
+    '&:hover': {
+      backgroundColor: '#1565C0',
+    },
+  },
+}
+
+export const MuiBoxHome = {
+  backgroundColor: '#003566',
+  color: 'white',
+  minHeight: '100vh',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  textAlign: 'center',
+}

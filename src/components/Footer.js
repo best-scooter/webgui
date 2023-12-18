@@ -16,7 +16,7 @@ function Footer() {
     <AppBar position="static" style={footerStyles}>
       <Toolbar>
         <Typography variant="body1" component="div">
-          &copy; {new Date().getFullYear()} StudyBuddy
+          &copy; {new Date().getFullYear()} Electrical Scooters AB
         </Typography>
       </Toolbar>
     </AppBar>

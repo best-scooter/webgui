@@ -7,6 +7,7 @@ import Button from '@mui/material/Button'
 import { Link } from 'react-router-dom'
 //import PersonIcon from '@mui/icons-material/Person';
 import { Category as CategoryIcon, Add as AddIcon } from '@mui/icons-material'
+import { MuiNavbarButtons } from '../css/theme'
 
 function Navbar() {
   return (
@@ -18,11 +19,16 @@ function Navbar() {
           to="/"
           style={{ textDecoration: 'none', color: 'white' }}
         >
-          StudyBuddy
+          eScooters AB
         </Typography>
 
         <div style={{ flexGrow: 1 }}></div>
-        <Button color="inherit" component={Link} to="/login">
+        <Button
+          sx={MuiNavbarButtons}
+          color="inherit"
+          component={Link}
+          to="/login"
+        >
           <CategoryIcon />
           Login
         </Button>
