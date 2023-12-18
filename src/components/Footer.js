@@ -1,7 +1,7 @@
-import React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
+import React from 'react'
+import AppBar from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
 
 function Footer() {
   const footerStyles = {
@@ -10,7 +10,7 @@ function Footer() {
     textAlign: 'center',
     padding: '20px 0',
     alignItems: 'center',
-  };
+  }
 
   return (
     <AppBar position="static" style={footerStyles}>
@@ -20,7 +20,7 @@ function Footer() {
         </Typography>
       </Toolbar>
     </AppBar>
-  );
+  )
 }
 
-export default Footer;
+export default Footer

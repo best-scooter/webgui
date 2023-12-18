@@ -1,14 +1,8 @@
-import React from 'react';
-import {
-  Button,
-  Typography,
-  Box,
-} from '@mui/material';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Button, Typography, Box } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 function HomePage() {
-
-
   return (
     <div>
       {/* Hero Section */}
@@ -34,13 +28,14 @@ function HomePage() {
           variant="contained"
           color="primary"
           size="large"
-          component={Link} to="/login"
+          component={Link}
+          to="/login"
         >
           Get Started
         </Button>
       </Box>
     </div>
-  );
+  )
 }
 
-export default HomePage;
+export default HomePage

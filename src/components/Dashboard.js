@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './Dashboard.css';
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import './Dashboard.css'
 
 const Dashboard = ({ oAuthToken, loggedInUser, onViewTripsClick }) => {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(null)
 
   useEffect(() => {
-
     const fetchUserData = async () => {
       const loggedInUser = localStorage.getItem('customerId')
       const oAuthToken = localStorage.getItem('oAuthToken')
@@ -14,31 +13,33 @@ const Dashboard = ({ oAuthToken, loggedInUser, onViewTripsClick }) => {
       try {
         // Hämta kundinformation baserat på användarens ID
         //GET /customer/{customerId}
-        const response = await axios.get(`http://localhost:1337/customer/${loggedInUser}`, {
-          headers: {
-            'X-Access-Token': oAuthToken
-          }
-        });
+        const response = await axios.get(
+          `http://localhost:1337/customer/${loggedInUser}`,
+          {
+            headers: {
+              'X-Access-Token': oAuthToken,
+            },
+          },
+        )
         // Bryt ut token, email, customerID från tokenResponse
-        const { id } = response.data.data;
-        console.log('CustomerId:', id);
+        const { id } = response.data.data
+        console.log('CustomerId:', id)
 
-        setUserData(response.data.data);
+        setUserData(response.data.data)
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error('Error fetching user data:', error)
       }
-    };
+    }
 
-    fetchUserData();
-
-  }, [oAuthToken, loggedInUser]);
+    fetchUserData()
+  }, [oAuthToken, loggedInUser])
 
   const handleViewTripsClick = () => {
     if (onViewTripsClick) {
-      const { id } = userData;
-      onViewTripsClick(oAuthToken, id);
+      const { id } = userData
+      onViewTripsClick(oAuthToken, id)
     }
-  };
+  }
 
   return (
     <div>
@@ -58,7 +59,7 @@ const Dashboard = ({ oAuthToken, loggedInUser, onViewTripsClick }) => {
         <button onClick={handleViewTripsClick}>View Trips</button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

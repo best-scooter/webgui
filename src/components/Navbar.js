@@ -1,27 +1,27 @@
-import React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import React from 'react'
+import AppBar from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 //import PersonIcon from '@mui/icons-material/Person';
-import {
-  Category as CategoryIcon,
-  Add as AddIcon,
-} from '@mui/icons-material';
-
+import { Category as CategoryIcon, Add as AddIcon } from '@mui/icons-material'
 
 function Navbar() {
-
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component={Link} to="/" style={{ textDecoration: 'none', color: 'white' }}>
+        <Typography
+          variant="h6"
+          component={Link}
+          to="/"
+          style={{ textDecoration: 'none', color: 'white' }}
+        >
           StudyBuddy
         </Typography>
-  
-        <div style={{ flexGrow: 1 }}></div>  
+
+        <div style={{ flexGrow: 1 }}></div>
         <Button color="inherit" component={Link} to="/login">
           <CategoryIcon />
           Login
@@ -40,7 +40,7 @@ function Navbar() {
         </Button>
       </Toolbar>
     </AppBar>
-  );
+  )
 }
 
-export default Navbar;
+export default Navbar
