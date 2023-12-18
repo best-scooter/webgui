@@ -1,36 +1,35 @@
 import React from 'react'
-import './Login.css'
+
 import { Link } from 'react-router-dom'
-import Button from '@mui/material/Button'
+import { Button, Card, Container } from '@mui/material'
+
+import { MuiContainer, MuiPaperContainerColumn, MuiButton } from '../css/theme'
 
 const AdminLander = () => {
   return (
-    <div className="container">
-      <Button
-        sx={{ backgroundColor: '#1976D2', color: 'white', margin: '10px' }}
-        color="inherit"
-        component={Link}
-        to="/admin/map"
-      >
-        Map view
-      </Button>
-      <Button
-        sx={{ backgroundColor: '#1976D2', color: 'white', margin: '10px' }}
-        color="inherit"
-        component={Link}
-        to="/admin/list"
-      >
-        List view
-      </Button>
-      <Button
-        sx={{ backgroundColor: '#1976D2', color: 'white', margin: '10px' }}
-        color="inherit"
-        component={Link}
-        to="/admin/customer"
-      >
-        Customer view
-      </Button>
-    </div>
+    <Container sx={MuiContainer}>
+      <Card sx={MuiPaperContainerColumn}>
+        <Button sx={MuiButton} color="inherit" component={Link} to="/admin/map">
+          Map view
+        </Button>
+        <Button
+          sx={MuiButton}
+          color="inherit"
+          component={Link}
+          to="/admin/list"
+        >
+          List view
+        </Button>
+        <Button
+          sx={MuiButton}
+          color="inherit"
+          component={Link}
+          to="/admin/customer"
+        >
+          Customer view
+        </Button>
+      </Card>
+    </Container>
   )
 }
 

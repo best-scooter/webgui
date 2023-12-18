@@ -1,17 +1,18 @@
 import 'leaflet/dist/leaflet.css'
+import 'react-toastify/dist/ReactToastify.css'
+import './Map.css'
+
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import L from 'leaflet'
 // import iconUrl from 'leaflet/dist/images/marker-icon.png'
 // import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 // import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { useEffect, useState, useRef } from 'react'
-import './Map.css'
 
 import { filterZone, getZones } from '../functions/fetchZones'
 import { getScooters } from '../functions/fetchScooters'
 
 import { toast, ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 
 import {
   Paper,

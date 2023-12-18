@@ -10,6 +10,7 @@ import {
   IconButton,
   Tooltip,
   TextField,
+  Container,
 } from '@mui/material'
 
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -18,6 +19,7 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import EditIcon from '@mui/icons-material/Edit'
 
 import { getCustomers, filterCustomer } from '../functions/fetchCustomer'
+import { MuiPaperContainerColumn, MuiList, MuiListItem } from '../css/theme'
 
 const AdminCustomer = () => {
   const [customers, setCustomers] = useState([])
@@ -140,7 +142,7 @@ const AdminCustomer = () => {
   }
 
   return (
-    <div className="container">
+    <Container sx={MuiPaperContainerColumn}>
       <div>
         <TextField
           label="Search"
@@ -149,12 +151,17 @@ const AdminCustomer = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           fullWidth
           margin="normal"
+          autoComplete="off"
+          placeholder=""
+          inputProps={{
+            autoComplete: 'off',
+          }}
         />
       </div>
       <div className="margin-center">{renderPagination()}</div>
-      <List sx={{ width: '100%', bgcolor: 'background.paper', color: 'black' }}>
+      <List sx={MuiList}>
         {currentCustomers.map((customer) => (
-          <ListItem key={customer.id} disableGutters>
+          <ListItem key={customer.id} disableGutters sx={MuiListItem}>
             <ListItemText
               primary={`${customer.customerName} - ${customer.email}`}
             />
@@ -188,7 +195,7 @@ const AdminCustomer = () => {
           </ListItem>
         ))}
       </List>
-    </div>
+    </Container>
   )
 }
 
