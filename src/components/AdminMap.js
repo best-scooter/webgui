@@ -14,14 +14,7 @@ import { getScooters } from '../functions/fetchScooters'
 
 import { toast, ToastContainer } from 'react-toastify'
 
-import {
-  Paper,
-  Typography,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from '@mui/material'
+import { Paper, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 
 delete L.Icon.Default.prototype._getIconUrl
 
@@ -95,12 +88,12 @@ const Admin = () => {
   return (
     <div className="adminContainer">
       <ToastContainer position="top-center" />
-
       <Paper>
-        <Typography variant="body1">hi</Typography>
         {Cities && Cities.length > 0 && (
-          <FormControl fullWidth>
-            <InputLabel id="simple-select-label">Go to City</InputLabel>
+          <FormControl fullWidth variant="filled">
+            <InputLabel id="simple-select-label" variant="filled">
+              Go to City
+            </InputLabel>
             <Select
               labelId="simple-select-label"
               id="simple-select"
@@ -108,7 +101,6 @@ const Admin = () => {
               label="City"
               onChange={handleChange}
             >
-              <MenuItem value="">None</MenuItem>
               {Cities.map((aCity) => (
                 <MenuItem key={aCity.id} value={aCity.id}>
                   {aCity.name}

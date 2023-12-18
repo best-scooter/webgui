@@ -32,7 +32,7 @@ const AdminLogin = () => {
   }
 
   return (
-    <div className="container">
+    <div className="containerLogin">
       <ToastContainer position="top-center" />
 
       {LoggedIn ? (

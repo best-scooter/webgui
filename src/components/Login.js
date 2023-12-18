@@ -28,7 +28,7 @@ const Login = ({ onLogin }) => {
   }
 
   return (
-    <div className="container">
+    <div className="containerLogin">
       <div className="input-group">
         <input type="text" placeholder="Användarnamn" />
       </div>

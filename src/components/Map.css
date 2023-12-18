@@ -1,5 +1,5 @@
 .full-height-map {
-  height: 100vh;
+  height: 70vh;
   margin: auto;
   padding: 20px;
 }
@@ -11,6 +11,7 @@
 .adminContainer {
   width: 80%;
   margin: auto;
+  margin-top: 25px;
 }
 
 .map-overlay {

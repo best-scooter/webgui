@@ -1,9 +1,10 @@
 /* Login.css */
-.container {
+.containerLogin {
   display: flex;
   flex-direction: column;
   width: 300px;
   margin: auto;
+  margin-top: 25px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
