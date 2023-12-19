@@ -11,7 +11,7 @@ export function Customfilter(data, searchQuery) {
     const valuesArray = Object.entries(item)
     for (const [key, value] of valuesArray) {
       if (key === 'createdAt' || key === 'updatedAt') {
-        return false
+        continue
       }
       const stringValue = String(value)
       if (stringValue.toLowerCase().includes(searchQuery.toLowerCase())) {

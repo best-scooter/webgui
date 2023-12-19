@@ -90,8 +90,9 @@ const AdminScooter = () => {
     console.log('customer inspect or something')
   }
 
-  const handleRemoveCustomer = () => {
+  const handleRemoveScooter = (id) => {
     console.log('customer removed or something')
+    console.log(`scooterid : ${id}`)
   }
 
   return (
@@ -123,7 +124,7 @@ const AdminScooter = () => {
                 <IconButton
                   edge="end"
                   aria-label="inspect"
-                  onClick={handleShowDetails}
+                  onClick={() => handleShowDetails(scooter.id)}
                 >
                   <PlayCircleIcon />
                 </IconButton>
@@ -139,7 +140,8 @@ const AdminScooter = () => {
                 <IconButton
                   edge="end"
                   aria-label="Remove"
-                  onClick={handleRemoveCustomer}
+                  value={scooter.id}
+                  onClick={() => handleRemoveScooter(scooter.id)}
                 >
                   <DeleteIcon />
                 </IconButton>

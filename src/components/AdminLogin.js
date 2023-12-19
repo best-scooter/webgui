@@ -16,6 +16,10 @@ const AdminLogin = () => {
       const res = await postAdmin(username, password)
       if (res && res.data.token) {
         console.log('token recieved')
+        //console.log(res)
+        //let test = Object.keys(res.data)
+        //console.log(test)
+        localStorage.setItem('admin', true)
         localStorage.setItem('oAuthToken', res.data.token)
         toast.success('Login successful!', { autoClose: 3000 })
         setLoggedIn(true)

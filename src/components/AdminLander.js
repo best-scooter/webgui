@@ -16,17 +16,17 @@ const AdminLander = () => {
           sx={MuiButton}
           color="inherit"
           component={Link}
-          to="/admin/list"
+          to="/admin/customer"
         >
-          List view
+          Customer view
         </Button>
         <Button
           sx={MuiButton}
           color="inherit"
           component={Link}
-          to="/admin/customer"
+          to="/admin/scooter"
         >
-          Customer view
+          Scooter view
         </Button>
       </Card>
     </Container>

@@ -21,3 +21,25 @@ export async function getScooters() {
     console.error('Error getting scooter', error)
   }
 }
+
+export async function delScooters(bikeId) {
+  const token = localStorage.getItem('oAuthToken')
+  try {
+    //console.log(`${API_URL}zone`)
+    const response = await fetch(`${API_URL}scooter/${bikeId}`, {
+      headers: {
+        'Content-Type': 'applications/json',
+        'X-Access-Token': token,
+      },
+      method: 'DELETE',
+    })
+    const result = response.json()
+    if (result) {
+      return result
+    } else {
+      console.log('Error getting scooter, response was empty')
+    }
+  } catch (error) {
+    console.error('Error getting scooter', error)
+  }
+}
