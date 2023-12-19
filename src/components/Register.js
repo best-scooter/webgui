@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react'
+import axios from 'axios'
 
 const Register = ({ onRegisterSuccess }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
 
   const handleRegister = async () => {
     try {
@@ -11,34 +11,41 @@ const Register = ({ onRegisterSuccess }) => {
       const response = await axios.post('http://localhost:1337/v1/customer', {
         name,
         email,
-      });
+      })
 
       // Anropa en callback-funktion för att meddela att registreringen var framgångsrik
       if (onRegisterSuccess) {
-        onRegisterSuccess();
+        onRegisterSuccess()
       }
 
-      console.log('Registration successful', response.data);
+      console.log('Registration successful', response.data)
     } catch (error) {
-      console.error('Error registering user:', error);
+      console.error('Error registering user:', error)
     }
-  };
+  }
 
   return (
     <div>
       <h1>Register</h1>
       <label>
         Name:
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
       </label>
       <label>
         Email:
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </label>
       <button onClick={handleRegister}>Register</button>
     </div>
-  );
-};
+  )
+}
 
-export default Register;
-
+export default Register
