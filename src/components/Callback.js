@@ -18,7 +18,7 @@ const Callback = ({ onLogin }) => {
         if (code) {
           // Om det finns en kod, byt ut 'code' för en OAuthToken
           const response = await axios.post(
-            'http://localhost:1337/customer/auth',
+            'http://localhost:1337/v1/customer/auth',
             { code, state },
           )
           const oAuthToken = response.data.data.oAuthToken
@@ -28,7 +28,7 @@ const Callback = ({ onLogin }) => {
 
           // POST /customer/token
           const tokenResponse = await axios.post(
-            'http://localhost:1337/customer/token',
+            'http://localhost:1337/v1/customer/token',
             { oAuthToken },
           )
 
