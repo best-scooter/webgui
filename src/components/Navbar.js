@@ -40,6 +40,10 @@ function Navbar() {
           <AddIcon />
           Dashboard
         </Button>
+        <Button color="inherit" component={Link} to="/payment">
+          <AddIcon />
+          Payment
+        </Button>
         <Button color="inherit" component={Link} to="/admin">
           <AddIcon />
           Admin
