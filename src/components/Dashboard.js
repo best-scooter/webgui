@@ -14,7 +14,7 @@ const Dashboard = ({ oAuthToken, loggedInUser, onViewTripsClick }) => {
         // Hämta kundinformation baserat på användarens ID
         //GET /customer/{customerId}
         const response = await axios.get(
-          `http://localhost:1337/customer/${loggedInUser}`,
+          `http://localhost:1337/v1/customer/${loggedInUser}`,
           {
             headers: {
               'X-Access-Token': oAuthToken,
