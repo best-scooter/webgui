@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './Trips.css'
 
-const Trips = ({ oAuthToken, loggedInUser, onViewDashboardClick }) => {
+const Trips = ({ oAuthToken, loggedInUser }) => {
   const [tripsData, setTripsData] = useState(null)
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const Trips = ({ oAuthToken, loggedInUser, onViewDashboardClick }) => {
         </div>
       )}
 
-      <button onClick={onViewDashboardClick}>Dashboard</button>
+      {/* <button onClick={onViewDashboardClick}>Dashboard</button> */}
     </div>
   )
 }
