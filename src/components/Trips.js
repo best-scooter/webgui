@@ -11,7 +11,7 @@ const Trips = ({ oAuthToken, loggedInUser, onViewDashboardClick }) => {
     const fetchTripsData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:1337/trip/by/customer/${loggedInUser}`,
+          `http://localhost:1337/v1/trip/by/customer/${loggedInUser}`,
           {
             headers: {
               'X-Access-Token': oAuthToken,
