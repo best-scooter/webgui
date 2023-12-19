@@ -59,6 +59,7 @@ const App = () => {
               />
             }
           />
+          <Route path="/register" element={<Register onRegisterSuccess={() => history.push('/login')} />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/admin/" element={<AdminLander />} />
           <Route path="/admin/map" element={<AdminMap />} />
