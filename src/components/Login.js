@@ -27,6 +27,12 @@ const Login = () => {
     }
   }
 
+  const handleRegister = () => {
+    // Redirect to the registration page
+    // Use react-router Link for client-side navigation
+    window.location.href = '/register'
+  }
+
   return (
     <div className="containerLogin">
       <div className="input-group">
@@ -37,6 +43,7 @@ const Login = () => {
       </div>
       <Link to="/admin/login">Logga in som staff</Link>
       <button onClick={handleLogin}>Logga in med OAuth</button>
+      <button onClick={handleRegister}>Registrera dig</button>
     </div>
   )
 }
