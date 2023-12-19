@@ -16,7 +16,7 @@ const Login = () => {
       const redirectUrl = `${window.location.origin}/authcallback`
       //Fetcha authentication URL från API-Server, encodeURIComponent:kodifiera komponenter av en URI (Uniform Resource Identifier) genom att ersätta vissa tecken med deras hexadecimala representationer
       const response = await axios.get(
-        `http://localhost:1337/customer/auth?redirectUrl=${encodeURIComponent(
+        `http://localhost:1337/v1/customer/auth?redirectUrl=${encodeURIComponent(
           redirectUrl,
         )}`,
       )
