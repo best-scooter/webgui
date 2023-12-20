@@ -16,7 +16,7 @@ const Login = () => {
       const redirectUrl = `${window.location.origin}/authcallback`
       //Fetcha authentication URL från API-Server, encodeURIComponent:kodifiera komponenter av en URI (Uniform Resource Identifier) genom att ersätta vissa tecken med deras hexadecimala representationer
       const response = await axios.get(
-        `http://localhost:1337/customer/auth?redirectUrl=${encodeURIComponent(
+        `http://localhost:1337/v1/customer/auth?redirectUrl=${encodeURIComponent(
           redirectUrl,
         )}`,
       )
@@ -25,6 +25,12 @@ const Login = () => {
     } catch (error) {
       console.error('Error fetching authentication URL:', error.message)
     }
+  }
+
+  const handleRegister = () => {
+    // Redirect to the registration page
+    // Use react-router Link for client-side navigation
+    window.location.href = '/register'
   }
 
   return (
@@ -37,6 +43,7 @@ const Login = () => {
       </div>
       <Link to="/admin/login">Logga in som staff</Link>
       <button onClick={handleLogin}>Logga in med OAuth</button>
+      <button onClick={handleRegister}>Registrera dig</button>
     </div>
   )
 }

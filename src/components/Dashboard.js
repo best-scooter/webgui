@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './Dashboard.css'
 
-const Dashboard = ({ oAuthToken, loggedInUser, onViewTripsClick }) => {
+const Dashboard = ({ oAuthToken, loggedInUser }) => {
   const [userData, setUserData] = useState(null)
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const Dashboard = ({ oAuthToken, loggedInUser, onViewTripsClick }) => {
         // Hämta kundinformation baserat på användarens ID
         //GET /customer/{customerId}
         const response = await axios.get(
-          `http://localhost:1337/customer/${loggedInUser}`,
+          `http://localhost:1337/v1/customer/${loggedInUser}`,
           {
             headers: {
               'X-Access-Token': oAuthToken,
@@ -34,12 +34,12 @@ const Dashboard = ({ oAuthToken, loggedInUser, onViewTripsClick }) => {
     fetchUserData()
   }, [oAuthToken, loggedInUser])
 
-  const handleViewTripsClick = () => {
-    if (onViewTripsClick) {
-      const { id } = userData
-      onViewTripsClick(oAuthToken, id)
-    }
-  }
+  // const handleViewTripsClick = () => {
+  //   if (onViewTripsClick) {
+  //     const { id } = userData
+  //     onViewTripsClick(oAuthToken, id)
+  //   }
+  // }
 
   return (
     <div>
@@ -56,7 +56,7 @@ const Dashboard = ({ oAuthToken, loggedInUser, onViewTripsClick }) => {
           </>
         )}
         {/* Button to navigate to Trips page */}
-        <button onClick={handleViewTripsClick}>View Trips</button>
+        {/* <button onClick={handleViewTripsClick}>View Trips</button> */}
       </div>
     </div>
   )

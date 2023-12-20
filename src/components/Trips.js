@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './Trips.css'
 
-const Trips = ({ oAuthToken, loggedInUser, onViewDashboardClick }) => {
+const Trips = ({ oAuthToken, loggedInUser }) => {
   const [tripsData, setTripsData] = useState(null)
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const Trips = ({ oAuthToken, loggedInUser, onViewDashboardClick }) => {
     const fetchTripsData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:1337/trip/by/customer/${loggedInUser}`,
+          `http://localhost:1337/v1/trip/by/customer/${loggedInUser}`,
           {
             headers: {
               'X-Access-Token': oAuthToken,
@@ -58,7 +58,7 @@ const Trips = ({ oAuthToken, loggedInUser, onViewDashboardClick }) => {
         </div>
       )}
 
-      <button onClick={onViewDashboardClick}>Dashboard</button>
+      {/* <button onClick={onViewDashboardClick}>Dashboard</button> */}
     </div>
   )
 }
