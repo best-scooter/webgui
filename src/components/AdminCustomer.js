@@ -9,18 +9,24 @@ import {
   Tooltip,
   TextField,
   Container,
+  Collapse,
 } from '@mui/material'
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import EditIcon from '@mui/icons-material/Edit'
 
-import { MuiPaperContainerColumn, MuiList, MuiListItem } from '../css/theme'
+import {
+  MuiPaperContainerColumn,
+  MuiList,
+  MuiListCollapse,
+  MuiListItem,
+} from '../css/theme'
 import './Login.css'
 import '../css/List.css'
 
 import { getCustomers } from '../functions/fetchCustomer'
-import { Customfilter } from '../functions/helpers'
+import { Customfilter, formatDateString } from '../functions/helpers'
 import Pagination from '../sub-components/Pagination'
 
 const AdminCustomer = () => {
@@ -28,6 +34,8 @@ const AdminCustomer = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
+
+  const [expandedCustomerId, setExpandedCustomerId] = useState(null)
 
   //Setting the data for pagination
   const itemsPerPage = 100
@@ -86,8 +94,12 @@ const AdminCustomer = () => {
     updateCustomersWithFilter()
   }, [searchQuery])
 
-  const handleShowDetails = () => {
-    console.log('customer inspect or something')
+  const handleShowDetails = (id) => {
+    if (expandedCustomerId === id) {
+      setExpandedCustomerId(null)
+    } else {
+      setExpandedCustomerId(id)
+    }
   }
 
   const handleRemoveCustomer = () => {
@@ -114,38 +126,82 @@ const AdminCustomer = () => {
       <div className="margin-center">{renderPagination()}</div>
       <List sx={MuiList}>
         {currentCustomers.map((customer) => (
-          <ListItem key={customer.id} disableGutters sx={MuiListItem}>
-            <ListItemText
-              primary={`${customer.customerName} - ${customer.email}`}
-            />
-            <ListItemSecondaryAction>
-              <Tooltip title="Inspect customer">
-                <IconButton
-                  edge="end"
-                  aria-label="inspect"
-                  onClick={handleShowDetails}
-                >
-                  <PlayCircleIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Edit">
-                <Link to={``}>
-                  <IconButton edge="end" aria-label="edit">
-                    <EditIcon />
+          <React.Fragment key={customer.id}>
+            <ListItem key={customer.id} disableGutters sx={MuiListItem}>
+              <ListItemText
+                primary={`${customer.customerName} - ${customer.email}`}
+              />
+              <ListItemSecondaryAction>
+                <Tooltip title="Inspect customer">
+                  <IconButton
+                    edge="end"
+                    aria-label="inspect"
+                    onClick={() => handleShowDetails(customer.id)}
+                  >
+                    <PlayCircleIcon />
                   </IconButton>
-                </Link>
-              </Tooltip>
-              <Tooltip title="Remove">
-                <IconButton
-                  edge="end"
-                  aria-label="Remove"
-                  onClick={handleRemoveCustomer}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-            </ListItemSecondaryAction>
-          </ListItem>
+                </Tooltip>
+                <Tooltip title="Edit">
+                  <Link to={``}>
+                    <IconButton edge="end" aria-label="edit">
+                      <EditIcon />
+                    </IconButton>
+                  </Link>
+                </Tooltip>
+                <Tooltip title="Remove">
+                  <IconButton
+                    edge="end"
+                    aria-label="Remove"
+                    onClick={handleRemoveCustomer}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              </ListItemSecondaryAction>
+            </ListItem>
+            <Collapse
+              in={expandedCustomerId === customer.id}
+              timeout="auto"
+              unmountOnExit
+            >
+              <List sx={MuiListCollapse}>
+                <ListItem>
+                  <ListItemText primary={`Customer ID: ${customer.id}`} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary={`Balance: ${customer.balance}`} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary={`Customer Name: ${customer.customerName}`}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary={`Email: ${customer.email}`} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary={`Long: ${customer.positionX}`} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary={`Lat: ${customer.positionY}`} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary={`Created At: ${formatDateString(
+                      customer.createdAt,
+                    )}`}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary={`Updated At: ${formatDateString(
+                      customer.updatedAt,
+                    )}`}
+                  />
+                </ListItem>
+              </List>
+            </Collapse>
+          </React.Fragment>
         ))}
       </List>
     </Container>
