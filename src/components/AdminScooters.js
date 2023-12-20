@@ -9,18 +9,24 @@ import {
   Tooltip,
   TextField,
   Container,
+  Collapse,
 } from '@mui/material'
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import EditIcon from '@mui/icons-material/Edit'
 
-import { MuiPaperContainerColumn, MuiList, MuiListItem } from '../css/theme'
+import {
+  MuiPaperContainerColumn,
+  MuiList,
+  MuiListItem,
+  MuiListCollapse,
+} from '../css/theme'
 import './Login.css'
 import '../css/List.css'
 
 import { getScooters } from '../functions/fetchScooters'
-import { Customfilter } from '../functions/helpers'
+import { Customfilter, formatDateString } from '../functions/helpers'
 import Pagination from '../sub-components/Pagination'
 
 const AdminScooter = () => {
@@ -28,6 +34,9 @@ const AdminScooter = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
+
+  // for collapse
+  const [expandedScooterId, setExpandedScooterId] = useState(null)
 
   //Setting the data for pagination
   const itemsPerPage = 100
@@ -86,8 +95,12 @@ const AdminScooter = () => {
     updateScootersWithFilter()
   }, [searchQuery])
 
-  const handleShowDetails = () => {
-    console.log('customer inspect or something')
+  const handleShowDetails = (id) => {
+    if (expandedScooterId === id) {
+      setExpandedScooterId(null)
+    } else {
+      setExpandedScooterId(id)
+    }
   }
 
   const handleRemoveScooter = (id) => {
@@ -115,39 +128,79 @@ const AdminScooter = () => {
       <div className="margin-center">{renderPagination()}</div>
       <List sx={MuiList}>
         {currentScooters.map((scooter) => (
-          <ListItem key={scooter.id} disableGutters sx={MuiListItem}>
-            <ListItemText
-              primary={`Scooter ${scooter.id} - ${scooter.available}`}
-            />
-            <ListItemSecondaryAction>
-              <Tooltip title="Inspect scooter">
-                <IconButton
-                  edge="end"
-                  aria-label="inspect"
-                  onClick={() => handleShowDetails(scooter.id)}
-                >
-                  <PlayCircleIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Edit">
-                <Link to={``}>
-                  <IconButton edge="end" aria-label="edit">
-                    <EditIcon />
+          <React.Fragment key={scooter.id}>
+            <ListItem key={scooter.id} disableGutters sx={MuiListItem}>
+              <ListItemText primary={`Scooter ${scooter.id}`} />
+              <ListItemSecondaryAction>
+                <Tooltip title="Inspect scooter">
+                  <IconButton
+                    edge="end"
+                    aria-label="inspect"
+                    onClick={() => handleShowDetails(scooter.id)}
+                  >
+                    <PlayCircleIcon />
                   </IconButton>
-                </Link>
-              </Tooltip>
-              <Tooltip title="Remove">
-                <IconButton
-                  edge="end"
-                  aria-label="Remove"
-                  value={scooter.id}
-                  onClick={() => handleRemoveScooter(scooter.id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-            </ListItemSecondaryAction>
-          </ListItem>
+                </Tooltip>
+                <Tooltip title="Edit">
+                  <Link to={``}>
+                    <IconButton edge="end" aria-label="edit">
+                      <EditIcon />
+                    </IconButton>
+                  </Link>
+                </Tooltip>
+                <Tooltip title="Remove">
+                  <IconButton
+                    edge="end"
+                    aria-label="Remove"
+                    value={scooter.id}
+                    onClick={() => handleRemoveScooter(scooter.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              </ListItemSecondaryAction>
+            </ListItem>
+            <Collapse
+              in={expandedScooterId === scooter.id}
+              timeout="auto"
+              unmountOnExit
+            >
+              <List sx={MuiListCollapse}>
+                <ListItem>
+                  <ListItemText primary={`Scooter ID: ${scooter.id}`} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary={`Battery: ${scooter.battery}`} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary={`Max Speed: ${scooter.maxSpeed}`} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary={`Available: ${scooter.available}`} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary={`Long: ${scooter.positionX}`} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary={`Lat: ${scooter.positionY}`} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary={`Created At: ${formatDateString(
+                      scooter.createdAt,
+                    )}`}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary={`Updated At: ${formatDateString(
+                      scooter.updatedAt,
+                    )}`}
+                  />
+                </ListItem>
+              </List>
+            </Collapse>
+          </React.Fragment>
         ))}
       </List>
     </Container>
