@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 
-const Register = ({ onRegisterSuccess }) => {
+const Register = ({ onRegisterSuccess, onLogin }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
 
@@ -29,6 +29,9 @@ const Register = ({ onRegisterSuccess }) => {
       // Bryt ut token, email, customerID från tokenResponse
       const { customerId } = tokenResponse.data.data
       console.log('CustomerId:', customerId)
+
+      // Skicka tillbaka användarinformationen till App.js
+      //onLogin(customerId, token)
     } catch (error) {
       console.error('Error registering user:', error)
     }
