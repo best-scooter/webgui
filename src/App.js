@@ -25,32 +25,13 @@ const App = () => {
   const handleLogin = (customerId, token) => {
     setLoggedInUser(customerId)
     setOAuthToken(token)
-    //setView('dashboard')
+    console.log(loggedInUser)
+    console.log(oAuthToken)
+
     localStorage.setItem('oAuthToken', token) // putting these into storage so we can handle logged in users for later
     localStorage.setItem('customerId', customerId)
-    window.location.href = 'http://localhost:3000/' //testing
+    window.location.href = 'http://localhost:3000/dashboard' //Omdirigerar till dashboard
   }
-
-  // const handleTrips = (token, customerId) => {
-  //   setLoggedInUser(customerId)
-  //   setOAuthToken(token)
-  //   //setView('dashboard')
-  //   localStorage.setItem('oAuthToken', token) // putting these into storage so we can handle logged in users for later
-  //   localStorage.setItem('customerId', customerId)
-  //   console.log(customerId, 'apppppp')
-  //   // Use the 'history' object to navigate
-  //   history.push('/v1/trips')
-  // }
-
-  // const handlePayments = (token, customerId) => {
-  //   setLoggedInUser(customerId)
-  //   setOAuthToken(token)
-  //   //setView('dashboard')
-  //   localStorage.setItem('oAuthToken', token) // putting these into storage so we can handle logged in users for later
-  //   localStorage.setItem('customerId', customerId)
-  //   // Use the 'history' object to navigate
-  //   history.push('/v1/payments')
-  // }
 
   return (
     <Router>
