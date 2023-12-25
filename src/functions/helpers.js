@@ -22,3 +22,8 @@ export function Customfilter(data, searchQuery) {
   })
   return filteredData
 }
+
+export function formatDateString(dateString) {
+  const date = new Date(dateString)
+  return date.toLocaleDateString()
+}

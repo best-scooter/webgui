@@ -62,10 +62,15 @@ export const MuiList = {
   borderRadius: '8px',
 }
 
+export const MuiListCollapse = {
+  bgcolor: '#f0f0f0',
+}
+
 export const MuiListItem = {
   margin: 'auto',
   bgcolor: 'background.paper',
   color: 'black',
+  borderBottom: '1px solid #ccc',
 }
 
 export const MuiNavbarButtons = {
