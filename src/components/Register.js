@@ -2,15 +2,15 @@ import React, { useState } from 'react'
 import axios from 'axios'
 
 const Register = ({ onRegisterSuccess }) => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleRegister = async () => {
     try {
       // POST /customer
       const response = await axios.post('http://localhost:1337/v1/customer', {
-        name,
-        email,
+        username,
+        password,
       })
 
       // Anropa en callback-funktion för att meddela att registreringen var framgångsrik
@@ -28,19 +28,19 @@ const Register = ({ onRegisterSuccess }) => {
     <div>
       <h1>Register</h1>
       <label>
-        Name:
+        Användarnamn:
         <input
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
       </label>
       <label>
-        Email:
+        Lösenord:
         <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
       </label>
       <button onClick={handleRegister}>Register</button>
