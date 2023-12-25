@@ -8,7 +8,7 @@ const Register = ({ onRegisterSuccess }) => {
   const handleRegister = async () => {
     try {
       // POST /customer
-      const response = await axios.post('http://localhost:1337/v1/customer', {
+      const response = await axios.post('http://localhost:1337/v1/customer/0', {
         name,
         email,
       })
@@ -17,8 +17,18 @@ const Register = ({ onRegisterSuccess }) => {
       if (onRegisterSuccess) {
         onRegisterSuccess()
       }
+      const token = response.data.data.token
+      console.log('Registration successful', token)
 
-      console.log('Registration successful', response.data)
+      // POST /customer/token
+      const tokenResponse = await axios.post(
+        'http://localhost:1337/v1/customer/token',
+        { token, email },
+      )
+
+      // Bryt ut token, email, customerID från tokenResponse
+      const { customerId } = tokenResponse.data.data
+      console.log('CustomerId:', customerId)
     } catch (error) {
       console.error('Error registering user:', error)
     }
