@@ -22,10 +22,12 @@ const Dashboard = ({ oAuthToken, loggedInUser }) => {
           },
         )
         // Bryt ut token, email, customerID från tokenResponse
-        const { id } = response.data.data
+        const { id, balance } = response.data.data
         console.log('CustomerId:', id)
 
         setUserData(response.data.data)
+        //Spara undan nuvarande saldo så att det finns tillgängligt för Payment.js
+        localStorage.setItem('currentBalance', balance)
       } catch (error) {
         console.error('Error fetching user data:', error)
       }
@@ -33,13 +35,6 @@ const Dashboard = ({ oAuthToken, loggedInUser }) => {
 
     fetchUserData()
   }, [oAuthToken, loggedInUser])
-
-  // const handleViewTripsClick = () => {
-  //   if (onViewTripsClick) {
-  //     const { id } = userData
-  //     onViewTripsClick(oAuthToken, id)
-  //   }
-  // }
 
   return (
     <div>
@@ -55,8 +50,6 @@ const Dashboard = ({ oAuthToken, loggedInUser }) => {
             <p>Saldo: {userData.balance}</p>
           </>
         )}
-        {/* Button to navigate to Trips page */}
-        {/* <button onClick={handleViewTripsClick}>View Trips</button> */}
       </div>
     </div>
   )
