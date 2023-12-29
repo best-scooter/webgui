@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom'
 import { MuiBoxHome } from '../css/theme'
 
 function HomePage() {
+  const tok = localStorage.getItem('oAuthToken')
+  console.log(tok)
+
   return (
     <div>
       {/* Hero Section */}

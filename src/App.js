@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import Login from './components/Login'
@@ -15,16 +15,19 @@ import AdminMap from './components/AdminMap'
 import AdminLogin from './components/AdminLogin'
 import AdminCustomer from './components/AdminCustomer'
 import AdminScooter from './components/AdminScooters'
+import AdminStations from './components/AdminStations'
+
+import WsTest from './components/WebSocketTest'
 
 const App = () => {
   console.log('App component rendered')
   //const [view, setView] = useState('login') // 'login', 'dashboard'
-  const [loggedInUser, setLoggedInUser] = useState(null)
-  const [oAuthToken, setOAuthToken] = useState(null)
+  //const [loggedInUser, setLoggedInUser] = useState(null)
+  //const [oAuthToken, setOAuthToken] = useState(null)
 
   const handleLogin = (customerId, token) => {
-    setLoggedInUser(customerId)
-    setOAuthToken(token)
+    //setLoggedInUser(customerId)
+    //setOAuthToken(token)
     //setView('dashboard')
     localStorage.setItem('oAuthToken', token) // putting these into storage so we can handle logged in users for later
     localStorage.setItem('customerId', customerId)
@@ -50,7 +53,7 @@ const App = () => {
   //   localStorage.setItem('customerId', customerId)
   //   // Use the 'history' object to navigate
   //   history.push('/v1/payments')
-  // }
+  // }AdminStations
 
   return (
     <Router>
@@ -71,6 +74,8 @@ const App = () => {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/customer" element={<AdminCustomer />} />
           <Route path="/admin/scooter" element={<AdminScooter />} />
+          <Route path="/wsTest" element={<WsTest />} />
+          <Route path="/admin/stations" element={<AdminStations />} />
         </Routes>
       </Layout>
     </Router>

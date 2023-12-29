@@ -27,3 +27,15 @@ export function formatDateString(dateString) {
   const date = new Date(dateString)
   return date.toLocaleDateString()
 }
+
+export function formStringsToIntegers(obj) {
+  const res = {}
+  for (const key in obj) {
+    if (key === 'name') {
+      res[key] = obj[key]
+    } else if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      res[key] = !isNaN(obj[key]) ? Number(obj[key]) : obj[key]
+    }
+  }
+  return res
+}

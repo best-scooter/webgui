@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './Login.css'
 import { postAdmin } from '../functions/fetchAdmin'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -10,15 +10,13 @@ const AdminLogin = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [LoggedIn, setLoggedIn] = useState(false)
+  const location = useLocation()
+  const { message } = location.state || { message: null }
 
   const handleLogin = async () => {
     try {
       const res = await postAdmin(username, password)
       if (res && res.data.token) {
-        console.log('token recieved')
-        //console.log(res)
-        //let test = Object.keys(res.data)
-        //console.log(test)
         localStorage.setItem('admin', true)
         localStorage.setItem('oAuthToken', res.data.token)
         toast.success('Login successful!', { autoClose: 3000 })
@@ -37,6 +35,7 @@ const AdminLogin = () => {
 
   return (
     <div className="containerLogin">
+      {message && <p>{message}</p>}
       <ToastContainer position="top-center" />
 
       {LoggedIn ? (

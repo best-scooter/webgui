@@ -22,7 +22,7 @@ export async function getScooters() {
   }
 }
 
-export async function delScooters(bikeId) {
+export async function delScooter(bikeId) {
   const token = localStorage.getItem('oAuthToken')
   try {
     //console.log(`${API_URL}zone`)
@@ -41,5 +41,31 @@ export async function delScooters(bikeId) {
     }
   } catch (error) {
     console.error('Error getting scooter', error)
+  }
+}
+
+export async function putScooter(customerId, updateData) {
+  const token = localStorage.getItem('oAuthToken')
+  try {
+    const response = await fetch(`${API_URL}scooter/${customerId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Access-Token': token,
+      },
+      method: 'PUT',
+      body: JSON.stringify(updateData),
+    })
+    console.log('here')
+    console.log(JSON.stringify(updateData))
+
+    if (response.ok) {
+      console.log('all okay')
+    } else {
+      console.log('Error putting scooter, response was not ok')
+      throw new Error('Failed to put scooter')
+    }
+  } catch (error) {
+    console.error('Error putting scooter', error)
+    throw error
   }
 }

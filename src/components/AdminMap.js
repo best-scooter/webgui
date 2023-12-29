@@ -2,6 +2,12 @@ import 'leaflet/dist/leaflet.css'
 import 'react-toastify/dist/ReactToastify.css'
 import './Map.css'
 
+//import WebSocket from 'websocket'
+//import { w3cwebsocket as W3CWebSocket } from 'websocket'
+//8import useWebSocket, { ReadyState } from 'react-use-websocket'
+
+import { w3cwebsocket as W3CWebSocket } from 'websocket'
+
 import { MapContainer, Marker, Popup, TileLayer, Polygon } from 'react-leaflet'
 import L from 'leaflet'
 // import iconUrl from 'leaflet/dist/images/marker-icon.png'
@@ -9,12 +15,14 @@ import L from 'leaflet'
 // import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { useEffect, useState, useRef } from 'react'
 
-import { filterZone, getZones } from '../functions/fetchZones'
 import { getScooters } from '../functions/fetchScooters'
 
 import { toast, ToastContainer } from 'react-toastify'
 
 import { Paper, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+
+import { checkAdmin } from '../functions/checkAdmin'
+import { filterZone, getZones } from '../functions/fetchZones'
 
 delete L.Icon.Default.prototype._getIconUrl
 
@@ -37,6 +45,9 @@ const Admin = () => {
   //
 
   useEffect(() => {
+    //check admin or redirect
+    checkAdmin()
+
     const fetchZones = async () => {
       const zones = await getZones()
       setZones(zones.data)
@@ -57,7 +68,40 @@ const Admin = () => {
       console.log(filteredScooters)
       setScooters(filteredScooters)
     }
+    const socketStart = async () => {
+      const token = localStorage.getItem('oAuthToken')
+      const wsClient = new W3CWebSocket(
+        'ws://localhost:8081/',
+        'protocolName',
+        undefined,
+        undefined,
+        {
+          'Sec-WebSocket-Protocol': token,
+        },
+      )
 
+      wsClient.onopen = () => {
+        console.log('WebSocket Client Connected')
+        // Additional logic after successful connection
+      }
+
+      wsClient.onerror = (error) => {
+        console.error('Connection Error: ', error)
+        // Handle connection errors
+      }
+
+      wsClient.onclose = () => {
+        console.log('WebSocket Client Closed')
+        // Handle closed connections
+      }
+
+      wsClient.onmessage = (message) => {
+        console.log('Received:', message.data)
+        // Handle incoming messages from the WebSocket server
+      }
+    }
+
+    socketStart()
     fetchZones()
     getAllScooters()
   }, [])
@@ -84,6 +128,8 @@ const Admin = () => {
       console.log('hi', event)
     }
   }
+
+  //const webSocketScooters = () => {}
 
   return (
     <div className="adminContainer">

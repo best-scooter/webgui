@@ -53,6 +53,17 @@ export const MuiButton = {
   },
 }
 
+export const MuiButtonForm = {
+  margin: '10px',
+  padding: '10px',
+  backgroundColor: '#1976D2',
+  color: 'white',
+  width: '200px',
+  '&:hover': {
+    backgroundColor: '#1565C0',
+  },
+}
+
 export const MuiList = {
   margin: '10px',
   width: '100%',

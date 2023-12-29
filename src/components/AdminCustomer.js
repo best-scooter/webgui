@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import {
   List,
   ListItem,
@@ -10,32 +9,46 @@ import {
   TextField,
   Container,
   Collapse,
+  Button,
 } from '@mui/material'
 
+//Icons
 import DeleteIcon from '@mui/icons-material/Delete'
-import PlayCircleIcon from '@mui/icons-material/PlayCircle'
-import EditIcon from '@mui/icons-material/Edit'
+import ExpandIcon from '@mui/icons-material/Expand'
 
+// custom sx styles packed as classes
 import {
   MuiPaperContainerColumn,
   MuiList,
   MuiListCollapse,
   MuiListItem,
+  MuiButtonForm,
 } from '../css/theme'
 import './Login.css'
 import '../css/List.css'
 
-import { getCustomers } from '../functions/fetchCustomer'
+// custom functions
 import { Customfilter, formatDateString } from '../functions/helpers'
 import Pagination from '../sub-components/Pagination'
+import { checkAdmin } from '../functions/checkAdmin'
+import {
+  putCustomerRequest,
+  delCustomerRequest,
+  getCustomers,
+} from '../functions/fetchCustomer'
+import { formStringsToIntegers } from '../functions/helpers'
 
 const AdminCustomer = () => {
   const [customers, setCustomers] = useState([])
+
+  // Pagination
   const [currentPage, setCurrentPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
 
+  // Collapse/Edit
   const [expandedCustomerId, setExpandedCustomerId] = useState(null)
+  const [editedCustomer, setEditedCustomer] = useState({})
 
   //Setting the data for pagination
   const itemsPerPage = 100
@@ -48,9 +61,12 @@ const AdminCustomer = () => {
     indexOfLastItem,
   )
   const totalPages = Math.ceil(displayedCustomers.length / itemsPerPage)
+  const excludedAttributes = ['customerId', 'id', 'createdAt', 'updatedAt']
 
   // Getting customers
   useEffect(() => {
+    //check admin or redirect
+    checkAdmin()
     const fetchCustomers = async () => {
       try {
         const fetchedCustomers = await getCustomers()
@@ -102,8 +118,27 @@ const AdminCustomer = () => {
     }
   }
 
-  const handleRemoveCustomer = () => {
-    console.log('customer removed or something')
+  //Editing the shown details
+  const handleInputChange = (field, value) => {
+    setEditedCustomer({
+      ...editedCustomer,
+      [field]: value,
+    })
+  }
+
+  //Sending Edited details
+  const handleSubmit = (event, customerId) => {
+    event.preventDefault()
+    //converting form strings to integers returneds as a json object
+    const fixedformdata = formStringsToIntegers(editedCustomer)
+    putCustomerRequest(customerId, fixedformdata)
+    setEditedCustomer(null)
+  }
+
+  const handleRemoveCustomer = (customerId) => {
+    console.log(`Deleting customer with id: ${customerId}`)
+    // DEL is blocked by cors policy check with adam
+    delCustomerRequest(customerId)
   }
 
   return (
@@ -111,6 +146,7 @@ const AdminCustomer = () => {
       <div>
         <TextField
           label="Search"
+          sx={{ backgroundColor: 'white' }}
           variant="outlined"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -132,27 +168,20 @@ const AdminCustomer = () => {
                 primary={`${customer.customerName} - ${customer.email}`}
               />
               <ListItemSecondaryAction>
-                <Tooltip title="Inspect customer">
+                <Tooltip title="Expand customer">
                   <IconButton
                     edge="end"
-                    aria-label="inspect"
+                    aria-label="expand"
                     onClick={() => handleShowDetails(customer.id)}
                   >
-                    <PlayCircleIcon />
+                    <ExpandIcon />
                   </IconButton>
-                </Tooltip>
-                <Tooltip title="Edit">
-                  <Link to={``}>
-                    <IconButton edge="end" aria-label="edit">
-                      <EditIcon />
-                    </IconButton>
-                  </Link>
                 </Tooltip>
                 <Tooltip title="Remove">
                   <IconButton
                     edge="end"
                     aria-label="Remove"
-                    onClick={handleRemoveCustomer}
+                    onClick={() => handleRemoveCustomer(customer.id)}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -164,42 +193,47 @@ const AdminCustomer = () => {
               timeout="auto"
               unmountOnExit
             >
-              <List sx={MuiListCollapse}>
-                <ListItem>
-                  <ListItemText primary={`Customer ID: ${customer.id}`} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary={`Balance: ${customer.balance}`} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary={`Customer Name: ${customer.customerName}`}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary={`Email: ${customer.email}`} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary={`Long: ${customer.positionX}`} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary={`Lat: ${customer.positionY}`} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary={`Created At: ${formatDateString(
-                      customer.createdAt,
-                    )}`}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary={`Updated At: ${formatDateString(
-                      customer.updatedAt,
-                    )}`}
-                  />
-                </ListItem>
-              </List>
+              <form onSubmit={(event) => handleSubmit(event, customer.id)}>
+                <List sx={MuiListCollapse}>
+                  {/* Map through the items attributes to create the text fields */}
+                  {Object.keys(customer).map((attribute) => {
+                    if (!excludedAttributes.includes(attribute)) {
+                      return (
+                        <ListItem key={attribute}>
+                          <TextField
+                            label={
+                              attribute.charAt(0).toUpperCase() +
+                              attribute.slice(1)
+                            }
+                            defaultValue={customer[attribute]}
+                            onChange={(e) =>
+                              handleInputChange(attribute, e.target.value)
+                            }
+                          />
+                        </ListItem>
+                      )
+                    }
+                    return null // this skips rendering empty ListItem div ^^
+                  })}
+                  <ListItem>
+                    <ListItemText
+                      primary={`Created At: ${formatDateString(
+                        customer.createdAt,
+                      )}`}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary={`Updated At: ${formatDateString(
+                        customer.updatedAt,
+                      )}`}
+                    />
+                  </ListItem>
+                  <Button sx={MuiButtonForm} type="submit">
+                    Save Changes
+                  </Button>
+                </List>
+              </form>
             </Collapse>
           </React.Fragment>
         ))}
