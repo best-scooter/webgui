@@ -32,13 +32,13 @@ function Navbar() {
           <CategoryIcon />
           Login
         </Button>
-        <Button color="inherit" component={Link} to="/trips">
-          <AddIcon />
-          Trips
-        </Button>
         <Button color="inherit" component={Link} to="/dashboard">
           <AddIcon />
           Dashboard
+        </Button>
+        <Button color="inherit" component={Link} to="/trips">
+          <AddIcon />
+          Trips
         </Button>
         <Button color="inherit" component={Link} to="/payment">
           <AddIcon />

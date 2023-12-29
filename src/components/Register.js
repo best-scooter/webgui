@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 
-const Register = ({ onRegisterSuccess }) => {
+const Register = ({ onRegisterSuccess, onLogin }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
 
   const handleRegister = async () => {
     try {
       // POST /customer
-      const response = await axios.post('http://localhost:1337/v1/customer', {
+      const response = await axios.post('http://localhost:1337/v1/customer/0', {
         name,
         email,
       })
@@ -17,8 +17,21 @@ const Register = ({ onRegisterSuccess }) => {
       if (onRegisterSuccess) {
         onRegisterSuccess()
       }
+      const token = response.data.data.token
+      console.log('Registration successful', token)
 
-      console.log('Registration successful', response.data)
+      // POST /customer/token
+      const tokenResponse = await axios.post(
+        'http://localhost:1337/v1/customer/token',
+        { token, email },
+      )
+
+      // Bryt ut token, email, customerID från tokenResponse
+      const { customerId } = tokenResponse.data.data
+      console.log('CustomerId:', customerId)
+
+      // Skicka tillbaka användarinformationen till App.js
+      //onLogin(customerId, token)
     } catch (error) {
       console.error('Error registering user:', error)
     }

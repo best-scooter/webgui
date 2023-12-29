@@ -6,14 +6,19 @@ const Payments = () => {
 
   const customerId = localStorage.getItem('customerId')
   const token = localStorage.getItem('oAuthToken')
+  const currentBalance = parseFloat(localStorage.getItem('currentBalance')) || 0
 
   const handleDeposit = async () => {
     try {
+      //Addera innehavande saldo och saldo kunden la till
+      const updatedBalance = currentBalance + parseFloat(amount)
+      console.log(updatedBalance, 'uppdaterat saldo')
+
       // PUT /customer/{customerId}
       const response = await axios.put(
         `http://localhost:1337/v1/customer/${customerId}`,
         {
-          balance: amount,
+          balance: updatedBalance,
         },
         {
           headers: {

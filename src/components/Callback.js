@@ -39,7 +39,6 @@ const Callback = ({ onLogin }) => {
           console.log('CustomerId:', customerId)
 
           // Skicka tillbaka användarinformationen till App.js
-
           onLogin(customerId, token)
         }
       } catch (error) {

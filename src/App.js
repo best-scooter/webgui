@@ -31,7 +31,7 @@ const App = () => {
     //setView('dashboard')
     localStorage.setItem('oAuthToken', token) // putting these into storage so we can handle logged in users for later
     localStorage.setItem('customerId', customerId)
-    window.location.href = 'http://localhost:3000/' //testing
+    window.location.href = 'http://localhost:3000/dashboard' //Omdirigerar till dashboard
   }
 
   // const handleTrips = (token, customerId) => {
