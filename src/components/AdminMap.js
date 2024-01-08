@@ -2,24 +2,23 @@ import 'leaflet/dist/leaflet.css'
 import 'react-toastify/dist/ReactToastify.css'
 import './Map.css'
 
-//import WebSocket from 'websocket'
-//import { w3cwebsocket as W3CWebSocket } from 'websocket'
-//8import useWebSocket, { ReadyState } from 'react-use-websocket'
-
-import { w3cwebsocket as W3CWebSocket } from 'websocket'
-
 import { MapContainer, Marker, Popup, TileLayer, Polygon } from 'react-leaflet'
 import L from 'leaflet'
-// import iconUrl from 'leaflet/dist/images/marker-icon.png'
-// import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
-// import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+
 import { useEffect, useState, useRef } from 'react'
 
 import { getScooters } from '../functions/fetchScooters'
 
 import { toast, ToastContainer } from 'react-toastify'
 
-import { Paper, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import {
+  Paper,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Button,
+} from '@mui/material'
 
 import { checkAdmin } from '../functions/checkAdmin'
 import { filterZone, getZones } from '../functions/fetchZones'
@@ -38,11 +37,10 @@ const Admin = () => {
   const [Zones, setZones] = useState([])
   const [Focus, setFocus] = useState([])
   const [Scooters, setScooters] = useState([])
-  const mapRef = useRef(null)
+  const [increment, setIncrement] = useState(0)
 
-  //
-  // TODO: kolla efter admin token annars blockera anslutning till sidan
-  //
+  const mapRef = useRef(null)
+  const socketRef = useRef(null)
 
   useEffect(() => {
     //check admin or redirect
@@ -68,43 +66,88 @@ const Admin = () => {
       console.log(filteredScooters)
       setScooters(filteredScooters)
     }
-    const socketStart = async () => {
-      const token = localStorage.getItem('oAuthToken')
-      const wsClient = new W3CWebSocket(
-        'ws://localhost:8081/',
-        'protocolName',
-        undefined,
-        undefined,
-        {
-          'Sec-WebSocket-Protocol': token,
-        },
-      )
-
-      wsClient.onopen = () => {
-        console.log('WebSocket Client Connected')
-        // Additional logic after successful connection
-      }
-
-      wsClient.onerror = (error) => {
-        console.error('Connection Error: ', error)
-        // Handle connection errors
-      }
-
-      wsClient.onclose = () => {
-        console.log('WebSocket Client Closed')
-        // Handle closed connections
-      }
-
-      wsClient.onmessage = (message) => {
-        console.log('Received:', message.data)
-        // Handle incoming messages from the WebSocket server
-      }
-    }
-
-    socketStart()
     fetchZones()
     getAllScooters()
   }, [])
+
+  useEffect(() => {
+    const token = localStorage.getItem('oAuthToken')
+    console.log(token)
+    socketRef.current = new WebSocket('ws://localhost:8081', token)
+
+    socketRef.current.onmessage = (event) => {
+      console.log('Received:', event.data)
+      const receivedData = JSON.parse(event.data)
+
+      setScooters((prevScooters) => {
+        const scooterIndex = prevScooters.findIndex(
+          (scooter) => scooter.scooterId === receivedData.scooterId,
+        )
+
+        if (scooterIndex !== -1) {
+          return prevScooters.map((scooter, index) =>
+            index === scooterIndex
+              ? {
+                  ...scooter,
+                  positionX: receivedData.positionX,
+                  positionY: receivedData.positionY,
+                }
+              : scooter,
+          )
+        } else {
+          return [
+            ...prevScooters,
+            {
+              scooterId: receivedData.scooterId,
+              positionX: receivedData.positionX,
+              positionY: receivedData.positionY,
+            },
+          ]
+        }
+      })
+    }
+
+    socketRef.current.onerror = (error) => {
+      console.error('WebSocket Error:', error)
+    }
+
+    socketRef.current.onopen = () => {
+      console.log('WebSocket Connected')
+      const data = {
+        message: 'subscribe',
+        subscriptions: ['scooter'],
+      }
+      socketRef.current.send(JSON.stringify(data))
+    }
+
+    socketRef.current.onclose = () => {
+      console.log('WebSocket Connection Closed')
+    }
+
+    return () => {
+      console.log('Cleaning up WebSocket Connection')
+      socketRef.current.close()
+    }
+  }, [])
+
+  const sendMessage = () => {
+    let num = 57 + increment
+    for (let i = 0; i < 1000; i++) {
+      const rand = Math.floor(Math.random() * 11000) + 1
+
+      const offsetX = (Math.random() - 0.5) * 0.1
+      const offsetY = (Math.random() - 0.5) * 0.1
+      const messageToSend = JSON.stringify({
+        message: 'scooter',
+        scooterId: rand,
+        positionX: num + offsetX,
+        positionY: 15 + offsetY,
+      })
+      console.log(messageToSend)
+      socketRef.current.send(messageToSend)
+    }
+    setIncrement(increment + 1000)
+  }
 
   const handleChange = (event) => {
     // kind of redundant but it is what it is
@@ -133,6 +176,14 @@ const Admin = () => {
 
   return (
     <div className="adminContainer">
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        onClick={sendMessage}
+      >
+        Send Message
+      </Button>
       <ToastContainer position="top-center" />
       <Paper>
         {Cities && Cities.length > 0 && (
@@ -196,12 +247,12 @@ const Admin = () => {
           ))}
         {Scooters &&
           Scooters.length > 0 &&
-          Scooters.map((scooter) => (
+          Scooters.map((scooter, index) => (
             <Marker
-              key={scooter.id}
+              key={index}
               position={[scooter.positionX, scooter.positionY]}
             >
-              <Popup>{scooter.id}</Popup>
+              <Popup>{scooter.scooterId}</Popup>
             </Marker>
           ))}
         {Zones &&

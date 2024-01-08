@@ -1,49 +1,59 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Button, Typography, Box } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { MuiBoxHome } from '../css/theme'
 
 function WsTest() {
+  const socketRef = useRef(null)
+
   useEffect(() => {
     const token = localStorage.getItem('oAuthToken')
     console.log(token)
-    const socket = new WebSocket('ws://localhost:8081', token)
-    // Event listener for handling incoming messages
-    socket.onmessage = (event) => {
+    socketRef.current = new WebSocket('ws://localhost:8081', token)
+
+    socketRef.current.onmessage = (event) => {
       console.log('Received:', event.data)
     }
 
-    socket.onerror = (error) => {
+    socketRef.current.onerror = (error) => {
       console.error('WebSocket Error:', error)
     }
 
-    socket.onopen = () => {
+    socketRef.current.onopen = () => {
       console.log('WebSocket Connected')
-      //subscriptions: ['trip', 'scooter', 'customer'],
-
       const data = {
         message: 'subscribe',
-        subscriptions: ['scooter'],
+        subscriptions: ['scooter', 'customer'],
       }
-      socket.send(JSON.stringify(data)) // Convert object to string
+      socketRef.current.send(JSON.stringify(data))
     }
 
-    socket.onclose = () => {
+    socketRef.current.onclose = () => {
       console.log('WebSocket Connection Closed')
     }
 
     return () => {
       console.log('Cleaning up WebSocket Connection')
-      socket.close()
+      socketRef.current.close()
     }
   }, [])
+
+  const sendMessage = () => {
+    const messageToSend = JSON.stringify({
+      message: 'customer',
+      customerId: 1,
+      positionX: 123.1,
+      positionY: 456.1,
+    })
+    socketRef.current.send(messageToSend)
+  }
 
   return (
     <div>
       {/* Hero Section */}
       <Box sx={MuiBoxHome}>
         <Typography variant="h2" sx={{ fontWeight: 'bold', mb: 2 }}>
-          Here im testing websocket bullshit
+          Here Im testing WebSocket
         </Typography>
         <Typography variant="body1" sx={{ mb: 4 }}>
           hi
@@ -51,6 +61,14 @@ function WsTest() {
         <Button
           variant="contained"
           color="primary"
+          size="large"
+          onClick={sendMessage}
+        >
+          Send Message
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
           size="large"
           component={Link}
           to="/login"
