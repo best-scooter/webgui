@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import Login from './components/Login'
 import Callback from './components/Callback'
+import CallbackReg from './components/CallbackReg'
 import Dashboard from './components/Dashboard'
 import Trips from './components/Trips'
 import Home from './components/Home'
@@ -64,6 +65,10 @@ const App = () => {
           <Route
             path="/authcallback"
             element={<Callback onLogin={handleLogin} />}
+          />
+          <Route
+            path="/authcallbackreg"
+            element={<CallbackReg onLogin={handleLogin} />}
           />
           <Route path="/trips" element={<Trips />} />
           <Route path="/register" element={<Register />} />

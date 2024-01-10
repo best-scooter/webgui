@@ -1,42 +1,26 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 
-const Register = ({ onRegisterSuccess }) => {
+const Register = () => {
   // const Register = ({ onRegisterSuccess, onLogin }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
 
   const handleRegister = async () => {
     try {
-      // POST /customer
-      const response = await axios.post('http://localhost:1337/v1/customer/0', {
-        name,
-        email,
-      })
-      console.log('name', name)
-      console.log('email', email)
+      localStorage.setItem('registerName', name)
+      localStorage.setItem('registerEmail', email)
 
-      // Anropa en callback-funktion för att meddela att registreringen var framgångsrik
-      if (onRegisterSuccess) {
-        onRegisterSuccess()
-      }
-      const token = response.data.data.token
-      console.log('Registration successful', token)
-
-      // POST /customer/token
-      const tokenResponse = await axios.post(
-        'http://localhost:1337/v1/customer/token',
-        { token, email },
+      //Skapa redirect URL för callback, window.location.origin ger URL-originen för den aktuella sidan, ex. http://localhost:3000/
+      const redirectUrl = `${window.location.origin}/authcallbackreg`
+      //Fetcha authentication URL från API-Server, encodeURIComponent:kodifiera komponenter av en URI (Uniform Resource Identifier) genom att ersätta vissa tecken med deras hexadecimala representationer
+      const response = await axios.get(
+        `http://localhost:1337/v1/customer/auth?redirectUrl=${encodeURIComponent(
+          redirectUrl,
+        )}`,
       )
-
-      console.log(tokenResponse)
-
-      // Bryt ut token, email, customerID från tokenResponse
-      const { customerId } = tokenResponse.data.data
-      console.log('CustomerId:', customerId)
-
-      // Skicka tillbaka användarinformationen till App.js
-      //onLogin(customerId, token)
+      //window.location.href: redirect användaren till URL:en som erhållits
+      return (window.location.href = response.data.data.url)
     } catch (error) {
       console.error('Error registering user:', error)
     }
