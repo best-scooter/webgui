@@ -12,6 +12,8 @@ const Login = () => {
   //GET /customer/auth
   const handleLogin = async () => {
     try {
+      const email = document.getElementById('email-input').value
+      localStorage.setItem('loginEmail', email)
       //Skapa redirect URL för callback, window.location.origin ger URL-originen för den aktuella sidan, ex. http://localhost:3000/
       const redirectUrl = `${window.location.origin}/authcallback`
       //Fetcha authentication URL från API-Server, encodeURIComponent:kodifiera komponenter av en URI (Uniform Resource Identifier) genom att ersätta vissa tecken med deras hexadecimala representationer
@@ -36,14 +38,11 @@ const Login = () => {
   return (
     <div className="containerLogin">
       <div className="input-group">
-        <input type="text" placeholder="Användarnamn" />
+        <input type="text" placeholder="Användarnamn" id="email-input" />
       </div>
-      <div className="input-group">
-        <input type="password" placeholder="Lösenord" />
-      </div>
-      <Link to="/admin/login">Logga in som staff</Link>
-      <button onClick={handleLogin}>Logga in med OAuth</button>
+      <button onClick={handleLogin}>Logga in</button>
       <button onClick={handleRegister}>Registrera dig</button>
+      <Link to="/admin/login">Logga in som staff</Link>
     </div>
   )
 }

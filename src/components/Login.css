@@ -16,6 +16,10 @@
   margin-bottom: 15px;
 }
 
+.containerLogin > a {
+  margin-top: 10px;
+}
+
 input {
   width: 100%;
   padding: 8px;

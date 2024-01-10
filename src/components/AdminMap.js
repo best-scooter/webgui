@@ -79,6 +79,10 @@ const Admin = () => {
       console.log('Received:', event.data)
       const receivedData = JSON.parse(event.data)
 
+      if (!event.positionX || !event.positionY) {
+        return
+      }
+
       setScooters((prevScooters) => {
         const scooterIndex = prevScooters.findIndex(
           (scooter) => scooter.scooterId === receivedData.scooterId,

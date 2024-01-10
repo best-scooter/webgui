@@ -22,6 +22,7 @@ const Callback = ({ onLogin }) => {
             { code, state },
           )
           const oAuthToken = response.data.data.oAuthToken
+          const loginEmail = localStorage.getItem('loginEmail')
           console.log(oAuthToken, 'oauthtoken')
           // Spara undan OAuth-token som vi fått lokalt
           localStorage.setItem('oAuthToken', oAuthToken)
@@ -29,7 +30,7 @@ const Callback = ({ onLogin }) => {
           // POST /customer/token
           const tokenResponse = await axios.post(
             'http://localhost:1337/v1/customer/token',
-            { oAuthToken },
+            { email: loginEmail, oAuthToken },
           )
 
           // Bryt ut token, email, customerID från tokenResponse
