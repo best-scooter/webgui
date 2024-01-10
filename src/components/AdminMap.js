@@ -37,7 +37,7 @@ const Admin = () => {
   const [Zones, setZones] = useState([])
   const [Focus, setFocus] = useState([])
   const [Scooters, setScooters] = useState([])
-  const [increment, setIncrement] = useState(0)
+  // const [increment, setIncrement] = useState(0)
 
   const mapRef = useRef(null)
   const socketRef = useRef(null)
@@ -76,12 +76,17 @@ const Admin = () => {
     socketRef.current = new WebSocket('ws://localhost:8081', token)
 
     socketRef.current.onmessage = (event) => {
-      console.log('Received:', event.data)
       const receivedData = JSON.parse(event.data)
 
-      if (!event.positionX || !event.positionY) {
+      const evalInvalidPosition =
+        receivedData['positionX'] === undefined ||
+        receivedData['positionY'] === undefined
+      console.log(evalInvalidPosition)
+
+      if (evalInvalidPosition) {
         return
       }
+      console.log('Received:', event.data)
 
       setScooters((prevScooters) => {
         const scooterIndex = prevScooters.findIndex(
@@ -135,22 +140,25 @@ const Admin = () => {
   }, [])
 
   const sendMessage = () => {
-    let num = 57 + increment
-    for (let i = 0; i < 1000; i++) {
-      const rand = Math.floor(Math.random() * 11000) + 1
+    // let num = 57
+    let amount = 1000
+    for (let i = 0; i <= amount; i++) {
+      const rand = Math.floor(Math.random() * (10000 + amount)) + 1
 
       const offsetX = (Math.random() - 0.5) * 0.1
       const offsetY = (Math.random() - 0.5) * 0.1
+      const positionX = 15 + offsetX
+      const positionY = 57 + offsetY
+      // console.log(positionY, positionX)
       const messageToSend = JSON.stringify({
         message: 'scooter',
         scooterId: rand,
-        positionX: num + offsetX,
-        positionY: 15 + offsetY,
+        positionX,
+        positionY,
       })
       console.log(messageToSend)
       socketRef.current.send(messageToSend)
     }
-    setIncrement(increment + 1000)
   }
 
   const handleChange = (event) => {
@@ -254,7 +262,7 @@ const Admin = () => {
           Scooters.map((scooter, index) => (
             <Marker
               key={index}
-              position={[scooter.positionX, scooter.positionY]}
+              position={[scooter.positionY, scooter.positionX]}
             >
               <Popup>{scooter.scooterId}</Popup>
             </Marker>

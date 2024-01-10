@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 
-const Register = ({ onRegisterSuccess, onLogin }) => {
+const Register = ({ onRegisterSuccess }) => {
+  // const Register = ({ onRegisterSuccess, onLogin }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
 
@@ -12,6 +13,8 @@ const Register = ({ onRegisterSuccess, onLogin }) => {
         name,
         email,
       })
+      console.log('name', name)
+      console.log('email', email)
 
       // Anropa en callback-funktion för att meddela att registreringen var framgångsrik
       if (onRegisterSuccess) {
@@ -25,6 +28,8 @@ const Register = ({ onRegisterSuccess, onLogin }) => {
         'http://localhost:1337/v1/customer/token',
         { token, email },
       )
+
+      console.log(tokenResponse)
 
       // Bryt ut token, email, customerID från tokenResponse
       const { customerId } = tokenResponse.data.data
