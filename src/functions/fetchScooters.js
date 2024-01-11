@@ -33,14 +33,16 @@ export async function delScooter(bikeId) {
       },
       method: 'DELETE',
     })
-    const result = response.json()
-    if (result) {
-      return result
+
+    if (response.ok) {
+      return { success: true }
     } else {
-      console.log('Error getting scooter, response was empty')
+      console.log('Error deleting scooter, response was not ok')
+      return { success: false, status: response.status }
     }
   } catch (error) {
     console.error('Error getting scooter', error)
+    return { success: false, status: error.error.message }
   }
 }
 

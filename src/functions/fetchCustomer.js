@@ -58,7 +58,7 @@ export async function delCustomerRequest(customerId) {
         'Content-Type': 'application/json',
         'X-Access-Token': token,
       },
-      method: 'DEL',
+      method: 'DELETE',
     })
     if (response.ok) {
       console.log('all okay')

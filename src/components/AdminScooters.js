@@ -13,7 +13,6 @@ import {
 } from '@mui/material'
 
 // Icons from Mui
-import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandIcon from '@mui/icons-material/Expand'
 
 // custom sx styles packed as classes
@@ -28,7 +27,7 @@ import './Login.css'
 import '../css/List.css'
 
 // custom functions
-import { delScooter, getScooters, putScooter } from '../functions/fetchScooters'
+import { getScooters, putScooter } from '../functions/fetchScooters'
 import { Customfilter, formatDateString } from '../functions/helpers'
 import Pagination from '../sub-components/Pagination'
 import { checkAdmin } from '../functions/checkAdmin'
@@ -132,12 +131,6 @@ const AdminScooter = () => {
     setEditedScooter(null)
   }
 
-  const handleRemoveScooter = (id) => {
-    console.log('customer removed or something')
-    console.log(`scooterid : ${id}`)
-    delScooter(id)
-  }
-
   return (
     <Container sx={MuiPaperContainerColumn}>
       <div>
@@ -172,17 +165,6 @@ const AdminScooter = () => {
                     <ExpandIcon />
                   </IconButton>
                 </Tooltip>
-
-                <Tooltip title="Remove">
-                  <IconButton
-                    edge="end"
-                    aria-label="Remove"
-                    value={scooter.id}
-                    onClick={() => handleRemoveScooter(scooter.id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
               </ListItemSecondaryAction>
             </ListItem>
             <Collapse
@@ -193,10 +175,10 @@ const AdminScooter = () => {
               <form onSubmit={(event) => handleSubmit(event, scooter.id)}>
                 <List sx={MuiListCollapse}>
                   {/* Map through the items attributes to create the text fields */}
-                  {Object.keys(scooter).map((attribute) => {
+                  {Object.keys(scooter).map((attribute, index) => {
                     if (!excludedAttributes.includes(attribute)) {
                       return (
-                        <ListItem key={attribute}>
+                        <ListItem key={index}>
                           <TextField
                             label={
                               attribute.charAt(0).toUpperCase() +
