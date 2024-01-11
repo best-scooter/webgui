@@ -27,7 +27,11 @@ export function formatDateString(dateString) {
   const date = new Date(dateString)
   return date.toLocaleDateString()
 }
-
+/**
+ *
+ * @param {ayaya} very clean code and understandable kap
+ * @returns
+ */
 export function formStringsToIntegers(obj) {
   const res = {}
   for (const key in obj) {

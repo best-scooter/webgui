@@ -174,7 +174,9 @@ const AdminScooter = () => {
             >
               <form onSubmit={(event) => handleSubmit(event, scooter.id)}>
                 <List sx={MuiListCollapse}>
-                  {/* Map through the items attributes to create the text fields */}
+                  {/* Map through the items attributes to create the text fields 
+                  Vet inte hur du tänkt med parkings men dem fyller ju bara på med samma värden om vi har det så här med parking från api?
+                  */}
                   {Object.keys(scooter).map((attribute, index) => {
                     if (!excludedAttributes.includes(attribute)) {
                       return (

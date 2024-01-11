@@ -1,3 +1,5 @@
+const HOME_URL = process.env.REACT_APP_HOME_URL
+
 /**
  * checks admin values are set, if not redirects user to common authorised page
  */
@@ -8,6 +10,6 @@ export function checkAdmin() {
   if (admin && token) {
     return
   } else {
-    window.location.href = 'http://localhost:3000/login'
+    window.location.href = `${HOME_URL}admin/login`
   }
 }

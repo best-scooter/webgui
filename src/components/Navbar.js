@@ -5,8 +5,11 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 
 import { Link } from 'react-router-dom'
-//import PersonIcon from '@mui/icons-material/Person';
-import { Category as CategoryIcon, Add as AddIcon } from '@mui/icons-material'
+import LoginIcon from '@mui/icons-material/Login'
+import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize'
+import ModeOfTravelIcon from '@mui/icons-material/ModeOfTravel'
+import PaymentsIcon from '@mui/icons-material/Payments'
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 import { MuiNavbarButtons } from '../css/theme'
 
 function Navbar() {
@@ -29,23 +32,23 @@ function Navbar() {
           component={Link}
           to="/login"
         >
-          <CategoryIcon />
+          <LoginIcon />
           Login
         </Button>
         <Button color="inherit" component={Link} to="/dashboard">
-          <AddIcon />
+          <DashboardCustomizeIcon />
           Dashboard
         </Button>
         <Button color="inherit" component={Link} to="/trips">
-          <AddIcon />
+          <ModeOfTravelIcon />
           Trips
         </Button>
         <Button color="inherit" component={Link} to="/payment">
-          <AddIcon />
+          <PaymentsIcon />
           Payment
         </Button>
         <Button color="inherit" component={Link} to="/admin">
-          <AddIcon />
+          <AdminPanelSettingsIcon />
           Admin
         </Button>
       </Toolbar>
