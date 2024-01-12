@@ -288,8 +288,10 @@ const AdminStations = () => {
                         Scooters in Zone
                       </Typography>
                       {expandedZoneScooters.map((scooter) => (
-                        <ListItem key={scooter.id} disablePadding>
-                          <ListItemText primary={`Scooter ${scooter.id}`} />
+                        <ListItem key={scooter.scooterId} disablePadding>
+                          <ListItemText
+                            primary={`Scooter ${scooter.scooterId}`}
+                          />
                         </ListItem>
                       ))}
                     </List>

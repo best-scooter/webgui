@@ -1,5 +1,6 @@
 import React from 'react'
 
+// well all of this ended up being pretty much uneeded but hey ill leave it cause i spent to much time trying to make it work
 const Pagination = ({
   currentPage,
   totalPages,

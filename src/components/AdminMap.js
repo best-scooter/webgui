@@ -7,18 +7,9 @@ import L from 'leaflet'
 
 import { useEffect, useState, useRef } from 'react'
 
-import { getScooters } from '../functions/fetchScooters'
-
 import { toast, ToastContainer } from 'react-toastify'
 
-import {
-  Paper,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Button,
-} from '@mui/material'
+import { Paper, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 
 import { checkAdmin } from '../functions/checkAdmin'
 import { filterZone, getZones } from '../functions/fetchZones'
@@ -77,19 +68,20 @@ const Admin = () => {
       const cityZones = filterZone(zones.data, 'city')
       setCities(cityZones)
     }
-    const getAllScooters = async () => {
-      const allScooters = await getScooters()
-      const scooterData = allScooters.data
-      console.log(scooterData)
 
-      // filtrerar för att rädda min dator
-      //const filteredScooters = scooterData.filter((_, index) => Math.random() > 0.5);
-      const filteredScooters = scooterData.filter((scoot) => scoot.id === 2)
-      console.log(filteredScooters)
-      setScooters(filteredScooters)
-    }
+    // Old not using WS
+    // const getAllScooters = async () => {
+    //   const allScooters = await getScooters()
+    //   const scooterData = allScooters.data
+    //   console.log(scooterData)
+
+    //   // filtrerar för att rädda min dator
+    //   //const filteredScooters = scooterData.filter((_, index) => Math.random() > 0.5);
+    //   const filteredScooters = scooterData.filter((scoot) => scoot.id === 2)
+    //   console.log(filteredScooters)
+    //   setScooters(filteredScooters)
+    // }
     fetchZones()
-    getAllScooters()
   }, [])
 
   useEffect(() => {
@@ -189,27 +181,27 @@ const Admin = () => {
     }
   }, [])
 
-  const sendMessage = () => {
-    // let num = 57
-    let amount = 1000
-    for (let i = 0; i <= amount; i++) {
-      const rand = Math.floor(Math.random() * (10000 + amount)) + 1
+  // const sendMessage = () => {
+  //   // let num = 57
+  //   let amount = 1000
+  //   for (let i = 0; i <= amount; i++) {
+  //     const rand = Math.floor(Math.random() * (10000 + amount)) + 1
 
-      const offsetX = (Math.random() - 0.5) * 0.1
-      const offsetY = (Math.random() - 0.5) * 0.1
-      const positionX = 15 + offsetX
-      const positionY = 57 + offsetY
-      // console.log(positionY, positionX)
-      const messageToSend = JSON.stringify({
-        message: 'scooter',
-        scooterId: rand,
-        positionX,
-        positionY,
-      })
-      console.log(messageToSend)
-      socketRef.current.send(messageToSend)
-    }
-  }
+  //     const offsetX = (Math.random() - 0.5) * 0.1
+  //     const offsetY = (Math.random() - 0.5) * 0.1
+  //     const positionX = 15 + offsetX
+  //     const positionY = 57 + offsetY
+  //     // console.log(positionY, positionX)
+  //     const messageToSend = JSON.stringify({
+  //       message: 'scooter',
+  //       scooterId: rand,
+  //       positionX,
+  //       positionY,
+  //     })
+  //     console.log(messageToSend)
+  //     socketRef.current.send(messageToSend)
+  //   }
+  // }
 
   const handleChange = (event) => {
     // kind of redundant but it is what it is
@@ -226,6 +218,7 @@ const Admin = () => {
       const map = mapRef.current
       if (Focus[0] && Focus[1]) {
         const newLocation = [Focus[0], Focus[1]]
+        console.log(newLocation)
         map.setView(newLocation, 13)
       } else {
         toast.error('Please select a city first')
@@ -238,14 +231,14 @@ const Admin = () => {
 
   return (
     <div className="adminContainer">
-      <Button
+      {/* <Button
         variant="contained"
         color="primary"
         size="large"
         onClick={sendMessage}
       >
         Send Message
-      </Button>
+      </Button> */}
       <ToastContainer position="top-center" />
       <Paper>
         {Cities && Cities.length > 0 && (
@@ -265,8 +258,6 @@ const Admin = () => {
                   {aCity.name}
                 </MenuItem>
               ))}
-              <MenuItem value={20}>ErrorTest</MenuItem>
-              <MenuItem value={30}>ErrorTest</MenuItem>
             </Select>
           </FormControl>
         )}
@@ -276,7 +267,7 @@ const Admin = () => {
         className="full-height-map"
         id="map"
         ref={mapRef}
-        center={[100, 100]}
+        center={[57, 12]}
         zoom={6}
         minZoom={3}
         maxZoom={19}

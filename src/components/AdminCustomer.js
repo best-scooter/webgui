@@ -13,7 +13,6 @@ import {
 } from '@mui/material'
 
 //Icons
-import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandIcon from '@mui/icons-material/Expand'
 
 // custom sx styles packed as classes
@@ -31,11 +30,7 @@ import '../css/List.css'
 import { Customfilter, formatDateString } from '../functions/helpers'
 import Pagination from '../sub-components/Pagination'
 import { checkAdmin } from '../functions/checkAdmin'
-import {
-  putCustomerRequest,
-  delCustomerRequest,
-  getCustomers,
-} from '../functions/fetchCustomer'
+import { putCustomerRequest, getCustomers } from '../functions/fetchCustomer'
 import { formStringsToIntegers } from '../functions/helpers'
 
 const AdminCustomer = () => {
@@ -135,12 +130,6 @@ const AdminCustomer = () => {
     setEditedCustomer(null)
   }
 
-  const handleRemoveCustomer = (customerId) => {
-    console.log(`Deleting customer with id: ${customerId}`)
-    // DEL is blocked by cors policy check with adam
-    delCustomerRequest(customerId)
-  }
-
   return (
     <Container sx={MuiPaperContainerColumn}>
       <div>
@@ -175,15 +164,6 @@ const AdminCustomer = () => {
                     onClick={() => handleShowDetails(customer.id)}
                   >
                     <ExpandIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Remove">
-                  <IconButton
-                    edge="end"
-                    aria-label="Remove"
-                    onClick={() => handleRemoveCustomer(customer.id)}
-                  >
-                    <DeleteIcon />
                   </IconButton>
                 </Tooltip>
               </ListItemSecondaryAction>
@@ -235,7 +215,7 @@ const AdminCustomer = () => {
                 </List>
               </form>
             </Collapse>
-          </React.Fragment>
+          </React.Fragment> //such a fuqin mess
         ))}
       </List>
     </Container>
