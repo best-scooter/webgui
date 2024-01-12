@@ -31,12 +31,34 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 })
 
+const scooterIconUrl = process.env.PUBLIC_URL + '/scooter-icon.svg'
+const customerIconUrl = process.env.PUBLIC_URL + '/person-icon.svg'
+const scooterIcon = new L.Icon({
+  iconUrl: scooterIconUrl,
+  iconRetinaUrl: scooterIconUrl,
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+  shadowSize: [60, 60],
+  shadowAnchor: [30, 61],
+})
+const customerIcon = new L.Icon({
+  iconUrl: customerIconUrl,
+  iconRetinaUrl: customerIconUrl,
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+  shadowSize: [60, 60],
+  shadowAnchor: [21, 58],
+})
+
 const Admin = () => {
   const [selectedCity, setSelectedCity] = useState('')
   const [Cities, setCities] = useState('')
   const [Zones, setZones] = useState([])
   const [Focus, setFocus] = useState([])
   const [Scooters, setScooters] = useState([])
+  const [Customers, setCustomers] = useState([])
   // const [increment, setIncrement] = useState(0)
 
   const mapRef = useRef(null)
@@ -81,39 +103,67 @@ const Admin = () => {
       const evalInvalidPosition =
         receivedData['positionX'] === undefined ||
         receivedData['positionY'] === undefined
-      console.log(evalInvalidPosition)
 
       if (evalInvalidPosition) {
         return
       }
       console.log('Received:', event.data)
 
-      setScooters((prevScooters) => {
-        const scooterIndex = prevScooters.findIndex(
-          (scooter) => scooter.scooterId === receivedData.scooterId,
-        )
-
-        if (scooterIndex !== -1) {
-          return prevScooters.map((scooter, index) =>
-            index === scooterIndex
-              ? {
-                  ...scooter,
-                  positionX: receivedData.positionX,
-                  positionY: receivedData.positionY,
-                }
-              : scooter,
+      if (receivedData.message === 'scooter') {
+        setScooters((prevScooters) => {
+          const scooterIndex = prevScooters.findIndex(
+            (scooter) => scooter.scooterId === receivedData.scooterId,
           )
-        } else {
-          return [
-            ...prevScooters,
-            {
-              scooterId: receivedData.scooterId,
-              positionX: receivedData.positionX,
-              positionY: receivedData.positionY,
-            },
-          ]
-        }
-      })
+
+          if (scooterIndex !== -1) {
+            return prevScooters.map((scooter, index) =>
+              index === scooterIndex
+                ? {
+                    ...scooter,
+                    positionX: receivedData.positionX,
+                    positionY: receivedData.positionY,
+                  }
+                : scooter,
+            )
+          } else {
+            return [
+              ...prevScooters,
+              {
+                scooterId: receivedData.scooterId,
+                positionX: receivedData.positionX,
+                positionY: receivedData.positionY,
+              },
+            ]
+          }
+        })
+      } else if (receivedData.message === 'customer') {
+        setCustomers((prevCustomers) => {
+          const customerIndex = prevCustomers.findIndex(
+            (customer) => customer.customerId === receivedData.customerId,
+          )
+
+          if (customerIndex !== -1) {
+            return prevCustomers.map((customer, index) =>
+              index === customerIndex
+                ? {
+                    ...customer,
+                    positionX: receivedData.positionX,
+                    positionY: receivedData.positionY,
+                  }
+                : customer,
+            )
+          } else {
+            return [
+              ...prevCustomers,
+              {
+                customerId: receivedData.customerId,
+                positionX: receivedData.positionX,
+                positionY: receivedData.positionY,
+              },
+            ]
+          }
+        })
+      }
     }
 
     socketRef.current.onerror = (error) => {
@@ -124,7 +174,7 @@ const Admin = () => {
       console.log('WebSocket Connected')
       const data = {
         message: 'subscribe',
-        subscriptions: ['scooter'],
+        subscriptions: ['scooter', 'customer'],
       }
       socketRef.current.send(JSON.stringify(data))
     }
@@ -247,7 +297,7 @@ const Admin = () => {
           </button>
         </div>
 
-        {Cities &&
+        {/* {Cities &&
           Cities.length > 0 &&
           Cities.map((aCity) => (
             <Marker
@@ -256,15 +306,27 @@ const Admin = () => {
             >
               <Popup>{aCity.name}</Popup>
             </Marker>
-          ))}
+          ))} */}
         {Scooters &&
           Scooters.length > 0 &&
           Scooters.map((scooter, index) => (
             <Marker
               key={index}
               position={[scooter.positionY, scooter.positionX]}
+              icon={scooterIcon}
             >
-              <Popup>{scooter.scooterId}</Popup>
+              <Popup>{'Scooter ' + scooter.scooterId}</Popup>
+            </Marker>
+          ))}
+        {Customers &&
+          Customers.length > 0 &&
+          Customers.map((customer, index) => (
+            <Marker
+              key={index}
+              position={[customer.positionY, customer.positionX]}
+              icon={customerIcon}
+            >
+              <Popup>{'Customer ' + customer.customerId}</Popup>
             </Marker>
           ))}
         {Zones &&
