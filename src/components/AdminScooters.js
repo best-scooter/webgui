@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   List,
   ListItem,
@@ -35,6 +35,7 @@ import { formStringsToIntegers } from '../functions/helpers'
 
 const AdminScooter = () => {
   const [Scooters, setScooters] = useState([])
+  const socketRef = useRef(null)
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1)
@@ -73,6 +74,8 @@ const AdminScooter = () => {
     }
 
     fetchCustomers()
+    const token = localStorage.getItem('oAuthToken')
+    socketRef.current = new WebSocket('ws://localhost:8081', token)
   }, [])
 
   const handlePageChange = (pageNumber) => {
@@ -127,8 +130,35 @@ const AdminScooter = () => {
     event.preventDefault()
     //converting form strings to integers returneds as a json object
     const fixedformdata = formStringsToIntegers(editedScooter)
+    console.log(fixedformdata)
     putScooter(scooterId, fixedformdata)
     setEditedScooter(null)
+    const booleanValues = {}
+    const sendMessage = () => {
+      Object.entries(fixedformdata).forEach(([key, value]) => {
+        if (
+          key === 'decomissioned' ||
+          key === 'beingServiced' ||
+          key === 'disabled'
+        ) {
+          booleanValues[key] = !!value
+        }
+      })
+      console.log('boolean vals: ', booleanValues)
+      console.log(scooterId)
+      const msg = 'scooter'
+      const messageToSend = JSON.stringify({
+        message: msg,
+        scooterId: scooterId,
+        ...booleanValues,
+      })
+      console.log('message to send', messageToSend)
+      socketRef.current.send(messageToSend)
+    }
+
+    if (fixedformdata) {
+      sendMessage()
+    }
   }
 
   return (
