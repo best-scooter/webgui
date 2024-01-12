@@ -316,6 +316,7 @@ const Admin = () => {
               key={index}
               position={[customer.positionY, customer.positionX]}
               icon={customerIcon}
+              zIndexOffset="-1"
             >
               <Popup>{'Customer ' + customer.customerId}</Popup>
             </Marker>
