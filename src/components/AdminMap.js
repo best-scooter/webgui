@@ -110,6 +110,7 @@ const Admin = () => {
                     ...scooter,
                     positionX: receivedData.positionX,
                     positionY: receivedData.positionY,
+                    battery: receivedData.battery,
                   }
                 : scooter,
             )
@@ -120,6 +121,7 @@ const Admin = () => {
                 scooterId: receivedData.scooterId,
                 positionX: receivedData.positionX,
                 positionY: receivedData.positionY,
+                battery: receivedData.battery,
               },
             ]
           }
@@ -303,6 +305,7 @@ const Admin = () => {
               icon={scooterIcon}
             >
               <Popup>{'Scooter ' + scooter.scooterId}</Popup>
+              <Popup>{'Battery ' + scooter.battery}</Popup>
             </Marker>
           ))}
         {Customers &&
