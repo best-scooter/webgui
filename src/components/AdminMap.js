@@ -306,7 +306,7 @@ const Admin = () => {
               position={[scooter.positionY, scooter.positionX]}
               icon={scooterIcon}
             >
-              <Popup>{'Scooter ' + scooter.scooterId}</Popup>
+              <Popup offset={[0, -30]}>{'Scooter ' + scooter.scooterId}</Popup>
             </Marker>
           ))}
         {Customers &&
@@ -318,7 +318,9 @@ const Admin = () => {
               icon={customerIcon}
               zIndexOffset="-1"
             >
-              <Popup>{'Customer ' + customer.customerId}</Popup>
+              <Popup offset={[0, -30]}>
+                {'Customer ' + customer.customerId}
+              </Popup>
             </Marker>
           ))}
         {Zones &&

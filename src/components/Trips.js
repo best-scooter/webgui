@@ -6,6 +6,15 @@ import './Trips.css'
 const Trips = ({ oAuthToken, loggedInUser }) => {
   const [tripsData, setTripsData] = useState(null)
 
+  function calculateCost(priceInitial, priceTime, timeStarted, timeEnded) {
+    const startedTime = new Date(timeStarted)
+    const endedTime = new Date(timeEnded)
+    const timeDifferenceMs = endedTime - startedTime
+    const timeDurationInSeconds = timeDifferenceMs / 1000
+
+    return priceInitial + priceTime * timeDurationInSeconds
+  }
+
   useEffect(() => {
     const loggedInUser = localStorage.getItem('customerId')
     const fetchTripsData = async () => {
@@ -39,13 +48,19 @@ const Trips = ({ oAuthToken, loggedInUser }) => {
               <p>Scooter ID: {trip.scooterId}</p>
               <p>Starttid: {trip.timeStarted}</p>
               <p>Sluttid: {trip.timeEnded}</p>
-              <p>Avstånd: {trip.distance} km</p>
+              <p>Avstånd: {trip.distance}m</p>
               <p>Rutt: {trip.route}</p>
               <p>Bästa parkeringszon: {trip.bestParkingZone}</p>
               <p>Bästa upphämtningszon: {trip.bestPickupZone}</p>
               <p>Laddas vid parkering: {trip.parkedCharging}</p>
               <p>
-                Pris: {trip.priceInitial + trip.priceTime + trip.priceDistance}{' '}
+                Pris:{' '}
+                {calculateCost(
+                  trip.priceInitial,
+                  trip.priceTime,
+                  trip.timeStarted,
+                  trip.timeEnded,
+                )}
                 kr
               </p>
 
