@@ -56,7 +56,6 @@ const Admin = () => {
   const socketRef = useRef(null)
 
   useEffect(() => {
-    //check admin or redirect
     checkAdmin()
 
     const fetchZones = async () => {
@@ -69,18 +68,6 @@ const Admin = () => {
       setCities(cityZones)
     }
 
-    // Old not using WS
-    // const getAllScooters = async () => {
-    //   const allScooters = await getScooters()
-    //   const scooterData = allScooters.data
-    //   console.log(scooterData)
-
-    //   // filtrerar för att rädda min dator
-    //   //const filteredScooters = scooterData.filter((_, index) => Math.random() > 0.5);
-    //   const filteredScooters = scooterData.filter((scoot) => scoot.id === 2)
-    //   console.log(filteredScooters)
-    //   setScooters(filteredScooters)
-    // }
     fetchZones()
   }, [])
 
@@ -91,6 +78,15 @@ const Admin = () => {
 
     socketRef.current.onmessage = (event) => {
       const receivedData = JSON.parse(event.data)
+
+      if (receivedData['remove'] === true) {
+        setScooters((prevScooters) => {
+          return prevScooters.filter(
+            (scooter) => scooter.scooterId !== receivedData.scooterId,
+          )
+        })
+        return
+      }
 
       const evalInvalidPosition =
         receivedData['positionX'] === undefined ||
