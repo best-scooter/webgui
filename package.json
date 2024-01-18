@@ -33,7 +33,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "docker:build": "npm run build && docker built -t missivaeak/bestscooter_webgui .",
+    "docker:push": "docker push missivaeak/bestscooter_webgui"
   },
   "eslintConfig": {
     "extends": [

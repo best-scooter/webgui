@@ -1,12 +1,13 @@
 FROM node:17-alpine as builder
 
 WORKDIR /customer-webgui
-COPY package.json .
-COPY package-lock.json .
-RUN npm i
+# COPY package.json .
+# COPY package-lock.json .
+# RUN npm i
+RUN npm install --global serve
 
-COPY . .
+COPY ./build ./build
 
 EXPOSE 3000
 
-CMD ["npm","start"]
+CMD ["serve", "-s", "build"]
