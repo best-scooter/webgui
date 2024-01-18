@@ -304,8 +304,9 @@ const Admin = () => {
               position={[scooter.positionY, scooter.positionX]}
               icon={scooterIcon}
             >
-              <Popup>{'Scooter ' + scooter.scooterId}</Popup>
-              <Popup>{'Battery ' + scooter.battery}</Popup>
+              <Popup>
+                {`Scooter ${scooter.scooterId} battery ${scooter.battery}`}
+              </Popup>
             </Marker>
           ))}
         {Customers &&
